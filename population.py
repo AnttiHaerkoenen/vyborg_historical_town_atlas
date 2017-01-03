@@ -30,7 +30,11 @@ plt.style.use("ggplot")
 lang_groups.plot(x="vuosi", title="Viipurin kieliryhmät 1812-1939")
 plt.show()
 
-lang_groups.plot.bar(x="vuosi", stacked=True, title="Viipurin kieliryhmät 1812-1939")
+lang_groups.plot.bar(
+    x="vuosi",
+    stacked=True,
+    title="Viipurin kieliryhmät 1812-1939"
+)
 plt.show()
 
 lang_group_proportions.plot.area(

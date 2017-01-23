@@ -26,6 +26,8 @@ lang_group_proportions.columns = lang_groups.columns
 population = pd.read_csv(get_csv('population_1799_2011.csv'))
 population.columns = ["vuosi", "väkiluku"]
 
+
+
 plt.style.use("ggplot")
 lang_groups.plot(x="vuosi", title="Viipurin kieliryhmät 1812-1939")
 plt.show()

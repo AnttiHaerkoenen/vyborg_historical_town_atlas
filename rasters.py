@@ -1,14 +1,23 @@
 import rasterio
 
 
-def clip_histogram(file, min=9999, max=9999):
-    with rasterio.open(file) as src:
-        print(src.width, src.height)
-        print(src.crs)
-        print(src.transform)
-        print(src.count)
-        print(src.indexes)
+def clip_histogram(input_file, output_file, min=9999, max=9999):
+    with rasterio.open(input_file) as fin:
+        b = fin.read(1)
+        image = fin.read()
+        w, h = fin.shape
+
+    with rasterio.open(
+            output_file,
+            'w',
+            driver='GTiff',
+            width=w,
+            height=h,
+            count=1,
+            dtype=b.dtype
+    ) as fout:
+        fout.write(image)
 
 
 if __name__ == '__main__':
-    clip_histogram(file='WorldDEM_Vyborg.tif')
+    clip_histogram(input_file='WorldDEM_Vyborg.tif', output_file='output.tif')

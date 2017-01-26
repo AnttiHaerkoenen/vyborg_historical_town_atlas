@@ -5,7 +5,7 @@ def clip_histogram(input_file, output_file, min=9999, max=9999):
     with rasterio.open(input_file) as fin:
         b = fin.read(1)
         image = fin.read()
-        w, h = fin.shape
+        h, w = fin.shape
 
     with rasterio.open(
             output_file,

@@ -23,3 +23,8 @@
 - SVT VI 3, 24, 35, 44, 55:3
 - Hämynen, Tapio 2014. Viipurin läänin väestönkehitys autonomian ajalla. In Viipurin läänin historia 5, edited by Yrjö
  Kaukiainen, Risto Marjomaa and Jouko Nurmiainen, Karjalan kirjapaino and KKES, Joensuu, 144-185.
+ 
+ ##### Vyborg province deaths, births and marriages
+  
+- Hämynen, Tapio 2014. Viipurin läänin väestönkehitys autonomian ajalla. In Viipurin läänin historia 5, edited by Yrjö
+ Kaukiainen, Risto Marjomaa and Jouko Nurmiainen, Karjalan kirjapaino and KKES, Joensuu, 144-185.

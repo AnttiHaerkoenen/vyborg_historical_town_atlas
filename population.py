@@ -30,11 +30,10 @@ pop_districts = pd.read_csv(get_csv('population_districts.csv'), index_col=0)
 pop_suburbs = pd.read_csv(get_csv('population_suburbs.csv'), index_col=0)
 
 births_deaths = pd.read_csv(get_csv('births_deaths.csv'), index_col=0)
-print(births_deaths)
 
 plt.style.use("ggplot")
 lang_groups.plot(x="vuosi", title="Viipurin kieliryhmät 1812-1939")
-plt.show()
+# plt.show()
 
 lang_groups.plot(
     x="vuosi",
@@ -42,7 +41,7 @@ lang_groups.plot(
     stacked=True,
     title="Viipurin kieliryhmät 1812-1939"
 )
-plt.show()
+# plt.show()
 
 lang_group_proportions.plot(
     x="vuosi",
@@ -50,7 +49,7 @@ lang_group_proportions.plot(
     stacked=True,
     title="Viipurilaisten kieliryhmät 1812-1939\nVäestöosuudet"
 ).set_ylabel('%')
-plt.show()
+# plt.show()
 
 x = 1799, 2011
 population.plot(
@@ -62,7 +61,7 @@ population.plot(
     y1=population['väkiluku'],
     facecolor='blue'
 )
-plt.show()
+# plt.show()
 
 pop_districts.plot(
     kind='area',
@@ -71,7 +70,7 @@ pop_districts.plot(
     title="Viipurin kaupunginosien väkiluku 1870-1920"
 )
 plt.legend(loc='upper left').get_frame().set_facecolor("white")
-plt.show()
+# plt.show()
 
 
 pop_suburbs.plot(
@@ -81,7 +80,10 @@ pop_suburbs.plot(
     title="Viipurin esikaupunkien väkiluku 1870-1920"
 )
 plt.legend(loc='upper left').get_frame().set_facecolor("white")
-plt.show()
+# plt.show()
 
-births_deaths.plot()
+births_deaths.plot(
+    figsize=(10, 8),
+    title="Viipurin läänin avioituneisuus, syntyneisyys ja kuolleisuus 1812-1917"
+)
 plt.show()

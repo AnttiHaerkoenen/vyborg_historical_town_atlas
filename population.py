@@ -72,7 +72,6 @@ pop_districts.plot(
 plt.legend(loc='upper left').get_frame().set_facecolor("white")
 # plt.show()
 
-
 pop_suburbs.plot(
     kind='area',
     figsize=(12, 10),

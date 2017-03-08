@@ -1,0 +1,14 @@
+! pip install pandas
+! pip install numpy
+! pip install matplotlib
+
+import pandas as pd
+import numpy as np
+import matplotlib.pyplot as plt
+
+cd PycharmProjects/vyborg_historical_town_atlas/data/
+
+ruuth = pd.DataFrame.from_csv('population_ruuth.csv')
+ruuth.index.name = 'vuosi'
+ruuth['population_secular'].plot(title='Viipurin väestö 1718-1900')
+ruuth.dropna().plot(title='Viipurin väestö 1840-1900').legend(['Henkikirjat', 'Kirkonkirjat'])

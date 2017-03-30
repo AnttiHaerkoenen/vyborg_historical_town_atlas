@@ -65,7 +65,7 @@ population.plot(
 
 pop_districts.plot(
     kind='area',
-    figsize=(12, 10),
+    figsize=(10, 12),
     stacked=True,
     title="Viipurin kaupunginosien väkiluku 1870-1920"
 )
@@ -74,7 +74,7 @@ plt.legend(loc='upper left').get_frame().set_facecolor("white")
 
 pop_suburbs.plot(
     kind='area',
-    figsize=(12, 10),
+    figsize=(10, 12),
     stacked=True,
     title="Viipurin esikaupunkien väkiluku 1870-1920"
 )

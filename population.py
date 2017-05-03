@@ -57,7 +57,6 @@ lang_group_proportions.plot(
 ).set_ylabel('%')
 # plt.show()
 
-x = 1799, 2011
 population.plot(
     kind='area',
     x="vuosi",
@@ -73,6 +72,12 @@ pop_districts.plot(
     title="Viipurin kaupunginosien väkiluku 1870-1920"
 )
 plt.legend(loc='upper left').get_frame().set_facecolor("white")
+labels = 'Valli, Salakkalahti, Repola, P. Anna, Viipurin esik., ' \
+         'Saunalahti, Hiekka, Anina, Papula, Pantsarlahti, Muut'.split(', ')
+ann_x = [1920 for _ in labels]
+ann_y = [2100, 5100, 8300, 11300, 12300, 13000, 13400, 15700, 19400, 22800, 24825]
+for ann, x, y in zip(labels, ann_x, ann_y):
+    plt.annotate(ann, (x, y))
 # plt.show()
 
 pop_suburbs.plot(
@@ -82,6 +87,12 @@ pop_suburbs.plot(
     title="Viipurin esikaupunkien väkiluku 1870-1920"
 )
 plt.legend(loc='upper left').get_frame().set_facecolor("white")
+labels = 'Sorvali, Hiekka, Papula, Saunalahti, Likolampi, Tiiliruukki, Kelkkala, ' \
+         'Kolikkoinmäki, Karjala, Kangasranta, Saaret'.split(', ')
+ann_x = [1920 for _ in labels]
+ann_y = [1700, 4200, 5500, 6600, 7500, 10000, 14000, 18500, 22500, 24300, 27000]
+for ann, x, y in zip(labels, ann_x, ann_y):
+    plt.annotate(ann, (x, y))
 # plt.show()
 
 births_deaths.plot(

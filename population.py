@@ -34,7 +34,7 @@ births_deaths = pd.read_csv(get_csv('births_deaths.csv'), index_col=0)
 plt.style.use("ggplot")
 lang_groups.plot(
     x="vuosi",
-    title="Viipurin kieliryhmät 1812-1939",
+    #title="Viipurin kieliryhmät 1812-1939",
     figsize=(8, 6)
 )
 # plt.show()
@@ -43,7 +43,7 @@ lang_groups.plot(
     x="vuosi",
     kind="bar",
     stacked=True,
-    title="Viipurin kieliryhmät 1812-1939",
+    #title="Viipurin kieliryhmät 1812-1939",
     figsize=(8, 6)
 )
 # plt.show()
@@ -52,7 +52,7 @@ lang_group_proportions.plot(
     x="vuosi",
     kind='area',
     stacked=True,
-    title="Viipurilaisten kieliryhmät 1812-1939\nVäestöosuudet",
+    #title="Viipurilaisten kieliryhmät 1812-1939\nVäestöosuudet",
     figsize=(8, 6)
 ).set_ylabel('%')
 # plt.show()
@@ -60,8 +60,8 @@ lang_group_proportions.plot(
 population.plot(
     kind='area',
     x="vuosi",
-    color='blue',
-    title="Viipurin väkiluku 1799-2011"
+    color='blue'
+    # title="Viipurin väkiluku 1799-2011"
 )
 # plt.show()
 
@@ -69,7 +69,7 @@ pop_districts.plot(
     kind='area',
     figsize=(11, 12),
     stacked=True,
-    title="Viipurin kaupunginosien väkiluku 1870-1920"
+    #title="Viipurin kaupunginosien väkiluku 1870-1920"
 )
 plt.legend(loc='upper left').get_frame().set_facecolor("white")
 labels = 'Valli, Salakkalahti, Repola, P. Anna, Viipurin esik., ' \
@@ -83,8 +83,8 @@ for ann, x, y in zip(labels, ann_x, ann_y):
 pop_suburbs.plot(
     kind='area',
     figsize=(11, 12),
-    stacked=True,
-    title="Viipurin esikaupunkien väkiluku 1870-1920"
+    stacked=True
+    #title="Viipurin esikaupunkien väkiluku 1870-1920"
 )
 plt.legend(loc='upper left').get_frame().set_facecolor("white")
 labels = 'Sorvali, Hiekka, Papula, Saunalahti, Likolampi, Tiiliruukki, Kelkkala, ' \
@@ -96,7 +96,7 @@ for ann, x, y in zip(labels, ann_x, ann_y):
 # plt.show()
 
 births_deaths.plot(
-    figsize=(10, 8),
-    title="Viipurin läänin avioituneisuus, syntyneisyys ja kuolleisuus 1812-1917"
+    figsize=(10, 8)
+    #title="Viipurin läänin avioituneisuus, syntyneisyys ja kuolleisuus 1812-1917"
 )
 plt.show()

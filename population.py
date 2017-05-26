@@ -46,6 +46,7 @@ lang_groups.plot(
     #title="Viipurin kieliryhmät 1812-1939",
     figsize=(8, 6)
 )
+plt.tight_layout()
 # plt.show()
 
 lang_group_proportions.plot(
@@ -53,8 +54,10 @@ lang_group_proportions.plot(
     kind='area',
     stacked=True,
     #title="Viipurilaisten kieliryhmät 1812-1939\nVäestöosuudet",
-    figsize=(8, 6)
+    figsize=(8, 6),
+    ylim=(0, 100)
 ).set_ylabel('%')
+plt.tight_layout()
 # plt.show()
 
 population.plot(
@@ -99,4 +102,5 @@ births_deaths.plot(
     figsize=(10, 8)
     #title="Viipurin läänin avioituneisuus, syntyneisyys ja kuolleisuus 1812-1917"
 )
+plt.tight_layout()
 plt.show()

@@ -69,7 +69,7 @@ def main():
         min_val = -32767
 
     clip_histogram(input_file, output_file, min_val, max_val)
-    print("Raster manipulation succesfull.")
+    print("Raster manipulation successful.")
 
 
 if __name__ == '__main__':

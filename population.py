@@ -2,6 +2,7 @@ import io
 
 import requests
 import pandas as pd
+import numpy as np
 import matplotlib.pyplot as plt
 
 
@@ -30,6 +31,19 @@ pop_districts = pd.read_csv(get_csv('population_districts.csv'), index_col=0)
 pop_suburbs = pd.read_csv(get_csv('population_suburbs.csv'), index_col=0)
 
 births_deaths = pd.read_csv(get_csv('births_deaths.csv'), index_col=0)
+
+social_strata = pd.read_csv(get_csv('language_groups_by_social_strata.csv'), index_col=0)
+print(social_strata)
+social_strata['total'] = social_strata.sum(axis=1)
+total = social_strata.sum(axis=0)
+social_strata = social_strata.append(total, ignore_index=True)
+social_strata.index = "Finnish Swedish German Russian Other total".split(' ')
+strata_totals, lang_totals = np.broadcast_arrays(social_strata.values[-1], social_strata.values[:,-1].reshape(6,1))
+print(social_strata)
+print()
+print(lang_totals)
+print()
+print(strata_totals)
 
 plt.style.use("ggplot")
 lang_groups.plot(
@@ -103,4 +117,7 @@ births_deaths.plot(
     #title="Viipurin läänin avioituneisuus, syntyneisyys ja kuolleisuus 1812-1917"
 )
 plt.tight_layout()
-plt.show()
+# plt.show()
+
+
+# plt.show()

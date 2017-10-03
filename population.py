@@ -4,7 +4,7 @@ import requests
 import pandas as pd
 import numpy as np
 # import matplotlib.pyplot as plt
-
+from bokeh.plotting import figure, show
 
 DATA_DIR = 'https://raw.githubusercontent.com/AnttiHaerkoenen/vyborg_historical_town_atlas/master/data'
 
@@ -40,6 +40,8 @@ social_strata.index = "Finnish Swedish German Russian Other total".split(' ')
 strata_totals, lang_totals = np.broadcast_arrays(social_strata.values[-1], social_strata.values[:,-1].reshape(6,1))
 strata_pct = np.round(social_strata / strata_totals * 100, decimals=1)
 lang_pct = np.round(social_strata / lang_totals * 100, decimals=1)
+
+employment = pd.read_csv(get_csv('employment.csv'), index_col=0)
 
 # plt.style.use("ggplot")
 # lang_groups.plot(
@@ -114,4 +116,3 @@ lang_pct = np.round(social_strata / lang_totals * 100, decimals=1)
 # )
 # plt.tight_layout()
 # plt.show()
-

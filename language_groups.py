@@ -21,9 +21,20 @@ totals = lang_groups[lang_groups.columns[1:]].sum(axis=1)
 lang_group_pct = pd.DataFrame({'year': lang_groups['year']})
 lang_group_pct[lang_groups.columns[1:]] = lang_groups[lang_groups.columns[1:]].div(totals, axis=0) * 100
 
-lang_groups.columns = ["vuosi", "suomi", "venäjä", "ruotsi", "saksa", "muut"]
+lang_groups.columns = "vuosi, suomi, venäjä, ruotsi, saksa, muut".split(', ')
 lang_group_pct.columns = lang_groups.columns
 
 lang_groups_source = ColumnDataSource(lang_groups)
 lang_group_pct_source = ColumnDataSource(lang_group_pct)
 
+colors = "blue, red, yellow, black, green".split(' ,')
+f1 = figure(title="Viipurin kieliryhmät 1812-1939")
+f1.vbar_stack(
+    stackers="suomi, venäjä, ruotsi, saksa, muut".split(', '),
+    x='vuosi',
+    width=0.9,
+    color=colors,
+    source=lang_groups_source
+)
+
+show(f1)

@@ -29,10 +29,9 @@ lang_group_pct.columns = lang_groups.columns
 lang_groups_source = ColumnDataSource(lang_groups)
 lang_groups_pct_source = ColumnDataSource(lang_group_pct)
 
-colors = "blue, red, yellow, black, green".split(' ,')
 f = figure(
-    y_range=(0, 85000),
-    title="Viipurin kieliryhmät 1812-1939",
+    y_range=(0, 100),
+    title="Kieliryhmien osuus Viipurin väestöstä 1812-1939 (%)",
     plot_width=1000,
     plot_height=1000
 )
@@ -41,16 +40,16 @@ f.vbar_stack(
     x='year',
     width=8,
     color=Colorblind5,
-    source=lang_groups_source,
+    source=lang_groups_pct_source,
     legend=[c.upper() for c in group_names]
 )
-f.legend.location = "top_left"
+f.legend.location = "top_right"
 f.title.align = 'center'
 f.title.text_font_size = '20pt'
 f.xaxis.major_label_text_font_size = '16pt'
 f.yaxis.major_label_text_font_size = '16pt'
 
-hover1 = HoverTool(tooltips=[
+hover2 = HoverTool(tooltips=[
     ("vuosi", "@year"),
     ("suomi", "@suomi"),
     ("venäjä", "@venaja"),
@@ -59,6 +58,6 @@ hover1 = HoverTool(tooltips=[
     ("muut", "@muut")
 ])
 
-f.add_tools(hover1)
+f.add_tools(hover2)
 
 show(f)

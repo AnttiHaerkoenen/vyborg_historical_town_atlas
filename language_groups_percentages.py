@@ -51,11 +51,11 @@ f.yaxis.major_label_text_font_size = '16pt'
 
 hover2 = HoverTool(tooltips=[
     ("vuosi", "@year"),
-    ("suomi", "@suomi"),
-    ("venäjä", "@venaja"),
-    ("ruotsi", "@ruotsi"),
-    ("saksa", "@saksa"),
-    ("muut", "@muut")
+    ("suomi", "@suomi{0.0 a}"),
+    ("venäjä", "@venaja{0.0 a}"),
+    ("ruotsi", "@ruotsi{0.0 a}"),
+    ("saksa", "@saksa{0.0 a}"),
+    ("muut", "@muut{0.0 a}")
 ])
 
 f.add_tools(hover2)

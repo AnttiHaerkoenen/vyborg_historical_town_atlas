@@ -49,7 +49,7 @@ f.title.text_font_size = '20pt'
 f.xaxis.major_label_text_font_size = '16pt'
 f.yaxis.major_label_text_font_size = '16pt'
 
-hover2 = HoverTool(tooltips=[
+hover = HoverTool(tooltips=[
     ("vuosi", "@year"),
     ("suomi", "@suomi{0.0 a}"),
     ("venäjä", "@venaja{0.0 a}"),
@@ -58,6 +58,6 @@ hover2 = HoverTool(tooltips=[
     ("muut", "@muut{0.0 a}")
 ])
 
-f.add_tools(hover2)
+f.add_tools(hover)
 
 show(f)

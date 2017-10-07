@@ -36,7 +36,7 @@ social_strata['total'] = social_strata.sum(axis=1)
 total = social_strata.sum(axis=0)
 social_strata = social_strata.append(total, ignore_index=True)
 social_strata.index = "Finnish Swedish German Russian Other total".split(' ')
-strata_totals, lang_totals = np.broadcast_arrays(social_strata.values[-1], social_strata.values[:,-1].reshape(6,1))
+strata_totals, lang_totals = np.broadcast_arrays(social_strata.values[-1], social_strata.values[:, -1].reshape(6, 1))
 strata_pct = np.round(social_strata / strata_totals * 100, decimals=1)
 lang_pct = np.round(social_strata / lang_totals * 100, decimals=1)
 

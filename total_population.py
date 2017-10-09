@@ -7,7 +7,6 @@ from bokeh.models import ColumnDataSource, HoverTool
 from bokeh.plotting import figure
 
 DATA_DIR = 'https://raw.githubusercontent.com/AnttiHaerkoenen/vyborg_historical_town_atlas/master/data'
-FIRST, LAST = 1799, 1900 #1799, 2011
 
 
 def get_csv(file, data_dir=DATA_DIR):

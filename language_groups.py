@@ -22,7 +22,7 @@ lang_groups = lang_groups[lang_groups.columns[::-1]]
 totals = lang_groups.sum(axis=1)
 lang_group_pct = lang_groups.div(totals, axis=0) * 100
 
-group_names = "suomi, venaja, ruotsi, saksa, muut".split(', ')[::-1]
+group_names = "finnish, russian, swedish, german, other".split(', ')[::-1]
 lang_groups.columns = group_names
 lang_group_pct.columns = lang_groups.columns
 
@@ -32,7 +32,7 @@ lang_groups_pct_source = ColumnDataSource(lang_group_pct)
 colors = "blue, red, yellow, black, green".split(' ,')
 f = figure(
     y_range=(0, 85000),
-    title="Viipurin kieliryhmät 1812-1939",
+    title="Vyborg language groups 1812-1939",
     plot_width=1000,
     plot_height=1000
 )
@@ -51,12 +51,12 @@ f.xaxis.major_label_text_font_size = '16pt'
 f.yaxis.major_label_text_font_size = '16pt'
 
 hover1 = HoverTool(tooltips=[
-    ("vuosi", "@year"),
-    ("suomi", "@suomi"),
-    ("venäjä", "@venaja"),
-    ("ruotsi", "@ruotsi"),
-    ("saksa", "@saksa"),
-    ("muut", "@muut")
+    ("year", "@year"),
+    ("Finnish", "@finnish"),
+    ("Russian", "@russian"),
+    ("Swedish", "@swedish"),
+    ("German", "@german"),
+    ("Other", "@other")
 ])
 
 f.add_tools(hover1)

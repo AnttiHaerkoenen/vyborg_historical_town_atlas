@@ -22,7 +22,7 @@ lang_groups = lang_groups[lang_groups.columns[::-1]]
 totals = lang_groups.sum(axis=1)
 lang_group_pct = lang_groups.div(totals, axis=0) * 100
 
-group_names = "suomi, venaja, ruotsi, saksa, muut".split(', ')[::-1]
+group_names = "finnish, russian, swedish, german, other".split(', ')[::-1]
 lang_groups.columns = group_names
 lang_group_pct.columns = lang_groups.columns
 
@@ -31,7 +31,7 @@ lang_groups_pct_source = ColumnDataSource(lang_group_pct)
 
 f = figure(
     y_range=(0, 100),
-    title="Kieliryhmien osuus Viipurin väestöstä 1812-1939 (%)",
+    title="Language group proportions 1812-1939 (%)",
     plot_width=1000,
     plot_height=1000
 )
@@ -50,12 +50,12 @@ f.xaxis.major_label_text_font_size = '16pt'
 f.yaxis.major_label_text_font_size = '16pt'
 
 hover = HoverTool(tooltips=[
-    ("vuosi", "@year"),
-    ("suomi", "@suomi{0.0 a}"),
-    ("venäjä", "@venaja{0.0 a}"),
-    ("ruotsi", "@ruotsi{0.0 a}"),
-    ("saksa", "@saksa{0.0 a}"),
-    ("muut", "@muut{0.0 a}")
+    ("year", "@year"),
+    ("Finnish", "@finnish{0.0 a}"),
+    ("Russian", "@russian{0.0 a}"),
+    ("Swedish", "@swedish{0.0 a}"),
+    ("German", "@german{0.0 a}"),
+    ("Other", "@other{0.0 a}")
 ])
 
 f.add_tools(hover)

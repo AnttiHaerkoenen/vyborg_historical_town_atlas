@@ -5,6 +5,7 @@ import os
 import rasterio
 
 
+
 def clip_histogram(input_file, output_file, min_val=-32767, max_val=32768):
     try:
         with rasterio.open(input_file) as fin:
@@ -15,6 +16,7 @@ def clip_histogram(input_file, output_file, min_val=-32767, max_val=32768):
             m2 = image > max_val
             image[m1] = min_val
             image[m2] = max_val
+            dtype_ = b.dtype
     except IOError as ioe:
         raise ioe
 
@@ -26,11 +28,13 @@ def clip_histogram(input_file, output_file, min_val=-32767, max_val=32768):
             width=w,
             height=h,
             count=1,
-            dtype=b.dtype
+            dtype=dtype_
         ) as fout:
             fout.write(image)
     except IOError as ioe:
         raise ioe
+    except TypeError as type:
+        raise type
 
 
 def main():
@@ -46,7 +50,7 @@ def main():
         if not output_file:
             return
 
-        if os.path.isfile(input_file) and os.path.isfile(output_file):
+        if os.path.isfile(input_file):
             break
 
         print("File(s) do not exist")

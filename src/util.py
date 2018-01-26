@@ -93,7 +93,7 @@ def shp_to_geojson(
         geojson['features'].append(feature)
 
     with open(geojson_fp, 'w') as fout:
-        json.dump(geojson, fout)
+        json.dump(geojson, fout, indent=2)
     logging.info(f"shp_to_geojson: Data written to file {geojson_fp}.")
 
 

@@ -98,7 +98,7 @@ def combine_data(
             return None
 
     data_ = data_.join(data_stats, **kwargs)
-    return data_
+    return data_.reset_index()
 
 
 def shp_to_geojson(

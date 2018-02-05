@@ -79,7 +79,7 @@ def combine_data(
     if stats_format == 'csv':
         data_stats = pd.read_csv(stats_fp)
     elif stats_format in ('xls', 'xlsx'):
-        data_stats = pd.read_excel(stats_fp, sheet=sheet)
+        data_stats = pd.read_excel(stats_fp, sheet_name=sheet)
     else:
         logging.error(f'combine_data: {stats_format} is not supported data format')
         return None

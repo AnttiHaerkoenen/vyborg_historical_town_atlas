@@ -117,7 +117,7 @@ def shp_to_geojson(
     data_ = data_.to_crs(epsg=to_epsg)
     logging.info(f'Coordinates transformed from EPSG {crs_} to {to_epsg}.')
 
-    data_.columns = [remove_umlauts(c) for c in data_.columns]
+    data_.columns = pd.Index([remove_umlauts(c) for c in data_.columns])
     data_ = data_.applymap(remove_umlauts)
 
     if not columns:

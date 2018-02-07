@@ -2,10 +2,13 @@ import os
 import logging
 import json
 from typing import Sequence
+from datetime import datetime
 
 import pandas as pd
 import geopandas as gpd
 from shapely.geometry import Polygon, Point
+from bokeh.plotting import figure
+from bokeh.models import Title
 
 
 def polygon_to_point(
@@ -149,6 +152,38 @@ def remove_umlauts(text):
     if isinstance(text, str):
         text = text.replace('ä', 'a').replace('ö', 'o')
     return text
+
+
+def multipolygons_to_polygons(
+        geodataframe: gpd.GeoDataFrame,
+        geometry_column='geometry',
+        min_area=0
+) -> gpd.GeoDataFrame:
+    """
+    Turns rows with MultiPolygons into groups of rows with single Polygon each.
+    :param geodataframe:
+    :param geometry_column: Column containing Polygons and Multipolygons.
+    :param min_area: Size of Polygons to be removed
+    :return: enlargened geodataframe with each Polygon in its own row
+    """
+    new_geodataframe = gpd.GeoDataFrame(columns=geodataframe.columns)
+    for _, row in geodataframe.iterrows():
+        geom = row[geometry_column]
+        if geom.type == 'Polygon':
+            new_geodataframe = new_geodataframe.append(row)
+        elif geom.type == 'MultiPolygon':
+            for poly in geom:
+                new_row = row.copy()
+                new_row[geometry_column] = poly
+                if poly.area >= min_area:
+                    new_geodataframe = new_geodataframe.append(new_row)
+    return gpd.GeoDataFrame(new_geodataframe.reset_index())
+
+
+def get_xy(geodf: gpd.GeoDataFrame, geometry_col: str='geometry') -> gpd.GeoDataFrame:
+    geodf['x'] = geodf[geometry_col].apply(lambda geom: tuple(geom.exterior.coords.xy[0]))
+    geodf['y'] = geodf[geometry_col].apply(lambda geom: tuple(geom.exterior.coords.xy[1]))
+    return geodf
 
 
 if __name__ == '__main__':

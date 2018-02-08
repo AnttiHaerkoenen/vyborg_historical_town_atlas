@@ -6,6 +6,7 @@ import geopandas as gpd
 import pandas as pd
 import numpy as np
 from bokeh.plotting import figure, show
+from bokeh.layouts import gridplot
 from bokeh.palettes import magma
 from bokeh.models import (
     HoverTool,
@@ -19,12 +20,18 @@ from bokeh.models import (
 from src.util import combine_data, remove_umlauts, multipolygons_to_polygons, get_xy
 
 
-def plot_population_by_district(year, low=0, high=100) -> figure:
-    palette = magma(np.ceil((high - low) / 5))
+def plot_population_by_district(
+        year,
+        group,
+        low: float=0,
+        high: float=100,
+        step: float=5,
+        copyright_=False,
+        title=None
+) -> figure:
+    palette = magma(np.ceil((high - low) / step))
     palette = list(reversed(palette))
     year = str(year)
-
-    os.chdir('..\data')
 
     water = gpd.read_file('water.shp')
     water = get_xy(multipolygons_to_polygons(water))
@@ -59,8 +66,9 @@ def plot_population_by_district(year, low=0, high=100) -> figure:
         low=low,
         high=high
     )
+
     fig = figure(
-        title=f'Ortodoksien osuus Viipurin väestöstä {year}',
+        title=title,
         x_axis_location=None,
         y_axis_location=None,
         y_range=(60.69, 60.738),
@@ -69,7 +77,8 @@ def plot_population_by_district(year, low=0, high=100) -> figure:
     fig.title.text_font_size = "20px"
     fig.grid.grid_line_color = None
     pvm = datetime.date(datetime.now())
-    fig.add_layout(Title(text=f"© Antti Härkönen {pvm}", align="left"), "below")
+    if copyright_:
+        fig.add_layout(Title(text=f"© Antti Härkönen {pvm}", align="left"), "below")
 
     fig.patches(
         xs='x',
@@ -93,7 +102,7 @@ def plot_population_by_district(year, low=0, high=100) -> figure:
         ys='y',
         source=districts_src,
         fill_color={
-            'field': 'venaja_pct',
+            'field': group,
             'transform': color_mapper,
         },
         fill_alpha=0.8,
@@ -117,14 +126,46 @@ def plot_population_by_district(year, low=0, high=100) -> figure:
     hover.tooltips = [
         ('Kaupunginosa', '@name'),
         ('Väkiluku', '@yhteensa'),
-        ('Ortodoksien osuus', '@venaja_pct{0.0 a}'),
-        ('Juutalaisten osuus', '@jiddish_pct{0.0 a}'),
+        ('suomi', '@suomi_pct{0.0 a}'),
+        ('ruotsi', '@ruotsi_pct{0.0 a}'),
+        ('venäjä', '@venaja_pct{0.0 a}'),
+        ('saksa', '@saksa_pct{0.0 a}'),
+        ('jiddish', '@jiddish_pct{0.0 a}'),
         ('koordinaatit', '($y, $x)'),
     ]
     fig.add_tools(hover)
-    show(fig)
+    return fig
 
 
 if __name__ == '__main__':
+    os.chdir('..\data')
     logging.basicConfig(level=logging.INFO)
-    plot_population_by_district(1890, 0, 55)
+    group = 'suomi_pct'
+    min = 40
+    max = 90
+    step = 5
+    fig1 = plot_population_by_district(
+        1870,
+        group,
+        min,
+        max,
+        step,
+        title='Suomenkielisten osuus kaupunginosien väestöstä 1870 (%)'
+    )
+    fig2 = plot_population_by_district(
+        1880,
+        group,
+        min,
+        max,
+        step,
+        title='1880'
+    )
+    fig3 = plot_population_by_district(
+        1890,
+        group,
+        min,
+        max,
+        step,
+        title='1890'
+    )
+    show(gridplot([fig1, fig2], [fig3]))

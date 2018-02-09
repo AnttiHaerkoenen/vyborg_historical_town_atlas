@@ -6,7 +6,7 @@ import geopandas as gpd
 import pandas as pd
 import numpy as np
 from bokeh.plotting import figure, show
-from bokeh.palettes import Spectral9
+from bokeh.palettes import Category10_9 as palette
 from bokeh.transform import factor_cmap
 from bokeh.models import (
     HoverTool,
@@ -18,6 +18,18 @@ from bokeh.models import (
 )
 
 from src.util import multipolygons_to_polygons, get_xy
+
+district_name_mapper = {
+    '1': 'Linnoitus',
+    '2': 'P. Annan kruunu (Siikaniemi)',
+    '3': 'Salakkalahti',
+    '4': 'Repola',
+    '5': 'Pantsarlahti',
+    '6': 'Kaleva',
+    '7': 'Papula',
+    '8': 'Saunalahti',
+    '10': 'Neitsytniemi'
+}
 
 
 def plot_plots(fp_plots, title):
@@ -31,12 +43,13 @@ def plot_plots(fp_plots, title):
 
     plots = gpd.read_file(fp_plots)
     plots = get_xy(plots)
+    plots['district_name'] = plots.DISTRICT.map(district_name_mapper)
     plots_src = GeoJSONDataSource(geojson=plots.to_json())
 
-    factors = sorted(list(set(plots['DISTRICT'])))
+    factors = list(district_name_mapper.values())
     color_mapper = factor_cmap(
-        'DISTRICT',
-        palette=Spectral9,
+        'district_name',
+        palette=palette,
         factors=factors,
     )
 
@@ -44,8 +57,10 @@ def plot_plots(fp_plots, title):
         title=title,
         x_axis_location=None,
         y_axis_location=None,
-        y_range=(60.70, 60.74),
-        x_range=(28.69, 28.77),
+        y_range=(60.70, 60.73),
+        x_range=(28.70, 28.77),
+        plot_height=600,
+        plot_width=700,
     )
     fig.title.text_font_size = "20px"
     fig.grid.grid_line_color = None
@@ -75,15 +90,18 @@ def plot_plots(fp_plots, title):
         fill_alpha=0.8,
         line_color='black',
         line_width=0.8,
-        legend=factors
     )
-    hover = HoverTool(renderer=plots_patch)
+    hover = HoverTool(renderers=[plots_patch])
     hover.tooltips = [
-        ('kaupunginosa', '@DISTRICT'),
+        ('kaupunginosa', '@district_name'),
         ('numero', '@NUMBER'),
         ('koordinaatit', '($y, $x)'),
     ]
     fig.add_tools(hover)
+
+    for factor, color in zip(factors, palette):
+        fig.circle(x=[], y=[], fill_color=color, legend=factor)
+    fig.legend.location = 'bottom_left'
 
     return fig
 

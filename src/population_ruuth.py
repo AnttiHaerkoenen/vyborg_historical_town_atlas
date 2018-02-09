@@ -25,7 +25,7 @@ if __name__ == '__main__':
     fig.xaxis.major_label_text_font_size = '16pt'
     fig.yaxis.major_label_text_font_size = '16pt'
 
-    hover = HoverTool()
+    hover = HoverTool(renderers=[line1])
     hover.tooltips = [
             ("vuosi", "@year"),
             ("väkiluku, henkikirja", "@population_secular{0.}"),

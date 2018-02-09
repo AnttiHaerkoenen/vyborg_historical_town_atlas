@@ -5,7 +5,7 @@ from datetime import datetime
 import geopandas as gpd
 import pandas as pd
 import numpy as np
-from bokeh.plotting import figure, show
+from bokeh.plotting import figure, show, save
 from bokeh.palettes import Category10_9 as palette
 from bokeh.transform import factor_cmap
 from bokeh.models import (
@@ -16,6 +16,7 @@ from bokeh.models import (
     ColorBar,
     BasicTicker
 )
+import folium
 
 from src.util import multipolygons_to_polygons, get_xy
 
@@ -32,7 +33,25 @@ district_name_mapper = {
 }
 
 
-def plot_plots(fp_plots, title):
+def plot_plots_folium(fp_plots, title):
+    plots = gpd.read_file(fp_plots)
+    plots = get_xy(plots)
+    plots['district_name'] = plots.DISTRICT.map(district_name_mapper)
+
+    map_ = folium.Map(
+        location=[60.71, 28.73],
+        zoom_start=14,
+        tiles='Stamen Terrain',
+    )
+    folium.GeoJson(
+        plots.to_json()
+    ).add_to(map_)
+    folium.LayerControl().add_to(map_)
+
+    return map_
+
+
+def plot_plots_bokeh(fp_plots, title):
     water = gpd.read_file('water.shp')
     water = get_xy(multipolygons_to_polygons(water))
     water_src = GeoJSONDataSource(geojson=water.to_json())
@@ -108,6 +127,10 @@ def plot_plots(fp_plots, title):
 
 if __name__ == '__main__':
     logging.basicConfig(level=logging.INFO)
-    os.chdir('..\data')
-    fig = plot_plots('plots_1878.shp', 'Tontit 1878')
-    show(fig)
+    os.chdir(r'..\data')
+    # fig = plot_plots_bokeh('plots_1878.shp', 'Tontit 1878')
+    fig = plot_plots_folium('plots_1878.shp', 'Tontit 1878')
+    os.chdir(r'..\figures')
+    # show(fig)
+    # save(fig, 'plots_1878.html')
+    fig.save('plots_1878.html')

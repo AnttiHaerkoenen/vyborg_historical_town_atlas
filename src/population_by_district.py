@@ -41,7 +41,7 @@ def plot_population_by_district(
     islands = get_xy(multipolygons_to_polygons(islands))
     islands_src = GeoJSONDataSource(geojson=islands.to_json())
 
-    data_ = combine_data(
+    districts = combine_data(
         'districts.shp',
         'population_1870_1890.xlsx',
         sheet=year,
@@ -49,18 +49,18 @@ def plot_population_by_district(
         stats_on='Kaupunginosa',
         how='left'
     )
-    data_.columns = pd.Index([remove_umlauts(col.lower()) for col in data_.columns])
+    districts.columns = pd.Index([remove_umlauts(col.lower()) for col in districts.columns])
 
     kielet = ['suomi', 'ruotsi', 'venaja', 'saksa', 'ranska', 'englanti', 'viro',
                 'unkari', 'jiddish', 'tataari', 'romani', 'ilmoittamatta']
     for col in kielet:
-        data_[f'{col}_pct'] = data_[col] / data_['yhteensa'] * 100
+        districts[f'{col}_pct'] = districts[col] / districts['yhteensa'] * 100
 
-    data_ = data_[data_['yhteensa'] > 0]
-    data_ = get_xy(data_)
-    data_ = data_.fillna(0)
+    districts = districts[districts['yhteensa'] > 0]
+    districts = get_xy(districts)
+    districts = districts.fillna(0)
 
-    districts_src = GeoJSONDataSource(geojson=data_.to_json())
+    districts_src = GeoJSONDataSource(geojson=districts.to_json())
     color_mapper = LinearColorMapper(
         palette=palette,
         low=low,
@@ -97,7 +97,7 @@ def plot_population_by_district(
         line_color=None,
         line_width=0
     )
-    fig.patches(
+    district_patch = fig.patches(
         xs='x',
         ys='y',
         source=districts_src,
@@ -122,7 +122,7 @@ def plot_population_by_district(
         'right'
     )
 
-    hover = HoverTool()
+    hover = HoverTool(renderers=[district_patch])
     hover.tooltips = [
         ('Kaupunginosa', '@name'),
         ('Väkiluku', '@yhteensa'),
@@ -141,30 +141,30 @@ if __name__ == '__main__':
     os.chdir('..\data')
     logging.basicConfig(level=logging.INFO)
     group = 'suomi_pct'
-    min = 40
-    max = 90
+    min_ = 40
+    max_ = 90
     step = 5
     fig1 = plot_population_by_district(
         1870,
         group,
-        min,
-        max,
+        min_,
+        max_,
         step,
         title='Suomenkielisten osuus kaupunginosien väestöstä 1870 (%)'
     )
     fig2 = plot_population_by_district(
         1880,
         group,
-        min,
-        max,
+        min_,
+        max_,
         step,
         title='1880'
     )
     fig3 = plot_population_by_district(
         1890,
         group,
-        min,
-        max,
+        min_,
+        max_,
         step,
         title='1890'
     )

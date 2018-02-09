@@ -67,7 +67,7 @@ def plot_plots(fp_plots, title):
         line_color=None,
         line_width=0
     )
-    fig.patches(
+    plots_patch = fig.patches(
         xs='x',
         ys='y',
         source=plots_src,
@@ -77,6 +77,13 @@ def plot_plots(fp_plots, title):
         line_width=0.8,
         legend=factors
     )
+    hover = HoverTool(renderer=plots_patch)
+    hover.tooltips = [
+        ('kaupunginosa', '@DISTRICT'),
+        ('numero', '@NUMBER'),
+        ('koordinaatit', '($y, $x)'),
+    ]
+    fig.add_tools(hover)
 
     return fig
 

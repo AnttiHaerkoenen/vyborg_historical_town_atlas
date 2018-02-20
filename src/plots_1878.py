@@ -2,7 +2,7 @@ import os
 import logging
 
 import geopandas as gpd
-from bokeh.plotting import figure, show, save
+from bokeh.plotting import figure, show, output_file
 from bokeh.palettes import Category10_9 as palette
 from bokeh.transform import factor_cmap
 from bokeh.models import HoverTool, GeoJSONDataSource
@@ -124,6 +124,5 @@ if __name__ == '__main__':
         plot_height=600,
         plot_width=700,
     )
-    os.chdir(r'..\figures')
+    output_file(r'../figures/plots_1878.html')
     show(fig)
-    save(fig, filename='plots_1878.html', title='Cadastral plots of Vyborg 1878')

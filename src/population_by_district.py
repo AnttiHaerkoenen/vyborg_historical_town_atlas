@@ -5,7 +5,7 @@ from datetime import datetime
 import geopandas as gpd
 import pandas as pd
 import numpy as np
-from bokeh.plotting import figure, show
+from bokeh.plotting import figure, show, output_file
 from bokeh.layouts import gridplot
 from bokeh.palettes import magma
 from bokeh.models import (
@@ -168,4 +168,5 @@ if __name__ == '__main__':
         step,
         title='1890',
     )
+    output_file(r'../figures/population_by_district.html')
     show(gridplot([fig1], [fig2], [fig3]))

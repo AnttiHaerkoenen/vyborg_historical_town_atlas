@@ -4,7 +4,7 @@
 # You can set these variables from the command line.
 SPHINXOPTS    =
 SPHINXBUILD   = python -msphinx
-SPHINXPROJ    = Vyborghistoricaltownatlas
+SPHINXPROJ    = Vyborg_historical_town_atlas
 SOURCEDIR     = source
 BUILDDIR      = ..
 

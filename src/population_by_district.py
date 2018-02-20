@@ -150,7 +150,7 @@ if __name__ == '__main__':
         min_,
         max_,
         step,
-        title='Suomenkielisten osuus kaupunginosien väestöstä 1870 (%)'
+        title='1870',
     )
     fig2 = plot_population_by_district(
         1880,
@@ -158,7 +158,7 @@ if __name__ == '__main__':
         min_,
         max_,
         step,
-        title='1880'
+        title='1880',
     )
     fig3 = plot_population_by_district(
         1890,
@@ -166,6 +166,6 @@ if __name__ == '__main__':
         min_,
         max_,
         step,
-        title='1890'
+        title='1890',
     )
-    show(gridplot([fig1, fig2], [fig3]))
+    show(gridplot([fig1], [fig2], [fig3]))

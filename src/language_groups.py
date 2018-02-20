@@ -24,9 +24,8 @@ if __name__ == '__main__':
     colors = "blue, red, yellow, black, green".split(' ,')
     f = figure(
         y_range=(0, 85000),
-        title="Vyborg language groups 1812-1939",
-        plot_width=1000,
-        plot_height=1000
+        plot_width=700,
+        plot_height=700,
     )
     f.vbar_stack(
         stackers=group_names,
@@ -37,6 +36,7 @@ if __name__ == '__main__':
         legend=[c.upper() for c in group_names]
     )
     f.legend.location = "top_left"
+    f.legend.border_line_color = 'black'
     f.title.align = 'center'
     f.title.text_font_size = '20pt'
     f.xaxis.major_label_text_font_size = '16pt'
@@ -52,6 +52,5 @@ if __name__ == '__main__':
     ])
 
     f.add_tools(hover1)
-
     output_file(r'../figures/language_groups.html')
     show(f)

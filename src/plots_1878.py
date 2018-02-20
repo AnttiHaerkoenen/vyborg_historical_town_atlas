@@ -1,22 +1,11 @@
 import os
 import logging
-from datetime import datetime
 
 import geopandas as gpd
-import pandas as pd
-import numpy as np
 from bokeh.plotting import figure, show, save
 from bokeh.palettes import Category10_9 as palette
 from bokeh.transform import factor_cmap
-from bokeh.models import (
-    HoverTool,
-    GeoJSONDataSource,
-    CategoricalColorMapper,
-    Title,
-    ColorBar,
-    BasicTicker
-)
-import folium
+from bokeh.models import HoverTool, GeoJSONDataSource
 
 from src.util import multipolygons_to_polygons, get_xy
 
@@ -34,6 +23,8 @@ district_name_mapper = {
 
 
 def plot_plots_folium(fp_plots, title):
+    import folium
+
     plots = gpd.read_file(fp_plots)
     plots = get_xy(plots)
     plots['district_name'] = plots.DISTRICT.map(district_name_mapper)

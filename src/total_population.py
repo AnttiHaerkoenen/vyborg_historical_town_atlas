@@ -12,9 +12,8 @@ if __name__ == '__main__':
     source = ColumnDataSource(population)
 
     f = figure(
-        title="Population of Vyborg",
         plot_width=700,
-        plot_height=600
+        plot_height=500
     )
     f.line(x='year', y='population', source=source)
     f.title.align = 'center'
@@ -29,7 +28,6 @@ if __name__ == '__main__':
         ],
         mode='vline'
     )
-
     f.add_tools(hover)
     output_file(r'../figures/total_population.html')
     show(f)

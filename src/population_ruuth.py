@@ -1,7 +1,6 @@
 import os
 
 import pandas as pd
-import numpy as np
 from bokeh.io import show, output_file
 from bokeh.models import ColumnDataSource, HoverTool
 from bokeh.plotting import figure
@@ -14,9 +13,9 @@ if __name__ == '__main__':
     source = ColumnDataSource(population)
 
     fig = figure(
-        title="Viipurin väkiluku 1718-1900",
-        plot_width=600,
-        plot_height=500
+        plot_width=700,
+        plot_height=500,
+        x_range=(1718, 1900),
     )
     line1 = fig.line(x='year', y='population_secular', source=source, color='blue', legend='väestö henkikirjojen mukaan')
     line2 = fig.line(x='year', y='population_church', source=source, color='green', legend='väestö, srk')
@@ -36,5 +35,5 @@ if __name__ == '__main__':
     fig.add_tools(hover)
     fig.legend.location = 'top_left'
 
-    output_file(r'')
+    output_file(r'../figures/population_ruuth.html')
     show(fig)

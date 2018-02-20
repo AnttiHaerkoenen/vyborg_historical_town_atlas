@@ -51,7 +51,7 @@ def plot_plots_folium(fp_plots, title):
     return map_
 
 
-def plot_plots_bokeh(fp_plots, title=None):
+def plot_plots_bokeh(fp_plots, title=None, **kwargs):
     water = gpd.read_file('water.shp')
     water = get_xy(multipolygons_to_polygons(water))
     water_src = GeoJSONDataSource(geojson=water.to_json())
@@ -78,8 +78,7 @@ def plot_plots_bokeh(fp_plots, title=None):
         y_axis_location=None,
         y_range=(60.70, 60.73),
         x_range=(28.70, 28.77),
-        plot_height=800,
-        plot_width=1000,
+        **kwargs
     )
     if title:
         fig.title.text_font_size = "20px"
@@ -129,7 +128,11 @@ def plot_plots_bokeh(fp_plots, title=None):
 if __name__ == '__main__':
     logging.basicConfig(level=logging.INFO)
     os.chdir(r'..\data')
-    fig = plot_plots_bokeh('plots_1878.shp')
+    fig = plot_plots_bokeh(
+        'plots_1878.shp',
+        plot_height=650,
+        plot_width=800,
+    )
     os.chdir(r'..\figures')
     show(fig)
     save(fig, filename='plots_1878.html', title='Cadastral plots of Vyborg 1878')

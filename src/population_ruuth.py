@@ -15,8 +15,8 @@ if __name__ == '__main__':
 
     fig = figure(
         title="Viipurin väkiluku 1718-1900",
-        plot_width=1000,
-        plot_height=600
+        plot_width=600,
+        plot_height=500
     )
     line1 = fig.line(x='year', y='population_secular', source=source, color='blue', legend='väestö henkikirjojen mukaan')
     line2 = fig.line(x='year', y='population_church', source=source, color='green', legend='väestö, srk')
@@ -36,4 +36,5 @@ if __name__ == '__main__':
     fig.add_tools(hover)
     fig.legend.location = 'top_left'
 
+    output_file(r'')
     show(fig)

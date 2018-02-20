@@ -130,8 +130,8 @@ if __name__ == '__main__':
     os.chdir(r'..\data')
     fig = plot_plots_bokeh(
         'plots_1878.shp',
-        plot_height=650,
-        plot_width=800,
+        plot_height=600,
+        plot_width=700,
     )
     os.chdir(r'..\figures')
     show(fig)

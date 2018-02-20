@@ -32,9 +32,8 @@ if __name__ == '__main__':
 
     f = figure(
         y_range=(0, 100),
-        title="Language group proportions 1812-1939 (%)",
-        plot_width=1000,
-        plot_height=1000
+        plot_width=700,
+        plot_height=700
     )
     f.vbar_stack(
         stackers=group_names,
@@ -60,5 +59,5 @@ if __name__ == '__main__':
     ])
 
     f.add_tools(hover)
-
+    output_file(r'../figures/language_groups_percentages.html')
     show(f)

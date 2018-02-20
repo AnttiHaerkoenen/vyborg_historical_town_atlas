@@ -13,7 +13,7 @@ if __name__ == '__main__':
 
     f = figure(
         title="Population of Vyborg",
-        plot_width=1000,
+        plot_width=700,
         plot_height=600
     )
     f.line(x='year', y='population', source=source)
@@ -31,5 +31,5 @@ if __name__ == '__main__':
     )
 
     f.add_tools(hover)
-
+    output_file(r'../figures/total_population.html')
     show(f)

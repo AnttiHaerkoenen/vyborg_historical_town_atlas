@@ -3,7 +3,7 @@ rem md docs
     move docs html
     cd html
 
-    make html
+    call make.bat html
     cd ..
 
     move html docs

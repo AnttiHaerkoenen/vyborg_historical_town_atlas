@@ -10,8 +10,8 @@ Welcome to Vyborg historical town atlas's documentation!
    :maxdepth: 2
    :caption: Contents:
 
-    pages/vaesto
-    pages/vaesto_kaupunginosittain
+   pages/vaesto
+   pages/vaesto_kaupunginosittain
 
 
 

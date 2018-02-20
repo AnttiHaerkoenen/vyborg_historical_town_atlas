@@ -9,4 +9,3 @@ rem md docs
     move html docs
 
 popd
-pause

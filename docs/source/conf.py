@@ -93,8 +93,13 @@ todo_include_todos = True
 # The theme to use for HTML and HTML Help pages.  See the documentation for
 # a list of builtin themes.
 #
-html_theme = 'alabaster'
-
+html_theme = 'sphinx_rtd_theme'
+html_context = {
+    'display_github': True,
+    'github_user': 'AnttiHaerkoenen',
+    'github_repo': 'vyborg_historical_town_atlas',
+    'github_version': 'master/docs/source'
+}
 # Theme options are theme-specific and customize the look and feel of a theme
 # further.  For a list of options available for each theme, see the
 # documentation.

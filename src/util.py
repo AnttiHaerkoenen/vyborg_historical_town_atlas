@@ -186,6 +186,34 @@ def get_xy(geodf: gpd.GeoDataFrame, geometry_col: str='geometry') -> gpd.GeoData
     return geodf
 
 
+def clip_shapefile_to_rectangle(
+        *,
+        target_fp: str,
+        output_fp: str,
+        x_range: Sequence,
+        y_range: Sequence
+) -> None:
+    target = gpd.read_file(target_fp)
+    crs_ = target.crs
+    display_area = gpd.GeoDataFrame()
+    display_area['geometry'] = None
+    display_area.loc[0, 'geometry'] = Polygon([
+        (x_range[0], y_range[1]),
+        (x_range[1], y_range[1]),
+        (x_range[1], y_range[0]),
+        (x_range[0], y_range[0]),
+    ])
+    target = gpd.overlay(target, display_area, how='intersection')
+    target.crs = crs_
+    print(target)
+    target.to_file(output_fp)
+
+
+def set_gdal():
+    if 'GDAL_DATA' not in os.environ:
+        os.environ['GDAL_DATA'] = r'C:\Users\antth\AppData\Local\Continuum\anaconda3\Library\share\gdal'
+
+
 if __name__ == '__main__':
     logging.basicConfig(level=logging.INFO)
     os.chdir('..\data')

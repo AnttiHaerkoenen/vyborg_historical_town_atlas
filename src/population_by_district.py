@@ -1,12 +1,13 @@
 import os
 import logging
 from datetime import datetime
+import time
 
 import geopandas as gpd
 import pandas as pd
 import numpy as np
 from bokeh.plotting import figure, show, output_file
-from bokeh.layouts import column
+from bokeh.layouts import gridplot
 from bokeh.palettes import magma
 from bokeh.models import (
     HoverTool,
@@ -17,7 +18,7 @@ from bokeh.models import (
     BasicTicker
 )
 
-from src.util import combine_data, remove_umlauts, multipolygons_to_polygons, get_xy
+from src.util import *
 
 
 def plot_population_by_district(
@@ -27,13 +28,15 @@ def plot_population_by_district(
         high: float=100,
         step: float=5,
         copyright_=False,
-        title=None
+        title=None,
+        y_range=None,
+        x_range=None,
 ) -> figure:
     palette = magma(np.ceil((high - low) / step))
     palette = list(reversed(palette))
     year = str(year)
 
-    water = gpd.read_file('water.shp')
+    water = gpd.read_file('water_clip.shp')
     water = get_xy(multipolygons_to_polygons(water))
     water_src = GeoJSONDataSource(geojson=water.to_json())
 
@@ -140,33 +143,43 @@ def plot_population_by_district(
 if __name__ == '__main__':
     os.chdir('..\data')
     logging.basicConfig(level=logging.INFO)
+    set_gdal()
     group = 'suomi_pct'
     min_ = 40
     max_ = 90
     step = 5
+    y_range = 60.69, 60.738
+    x_range = 28.688, 28.78
+    clip_shapefile_to_rectangle(target_fp='water.shp', output_fp='water_clip.shp', y_range=y_range, x_range=x_range)
     fig1 = plot_population_by_district(
         1870,
         group,
-        min_,
-        max_,
-        step,
+        low=min_,
+        high=max_,
+        step=step,
         title='1870',
+        y_range=y_range,
+        x_range=x_range,
     )
     fig2 = plot_population_by_district(
         1880,
         group,
-        min_,
-        max_,
-        step,
+        low=min_,
+        high=max_,
+        step=step,
         title='1880',
+        y_range=x_range,
+        x_range=y_range,
     )
     fig3 = plot_population_by_district(
         1890,
         group,
-        min_,
-        max_,
-        step,
+        low=min_,
+        high=max_,
+        step=step,
         title='1890',
+        y_range=x_range,
+        x_range=y_range,
     )
     output_file(r'../figures/population_by_district.html')
-    show(column(fig1, fig2, fig3))
+    show(gridplot([fig1, fig2, fig3], ncols=1))

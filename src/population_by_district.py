@@ -6,7 +6,7 @@ import geopandas as gpd
 import pandas as pd
 import numpy as np
 from bokeh.plotting import figure, show, output_file
-from bokeh.layouts import gridplot
+from bokeh.layouts import column
 from bokeh.palettes import magma
 from bokeh.models import (
     HoverTool,
@@ -169,4 +169,4 @@ if __name__ == '__main__':
         title='1890',
     )
     output_file(r'../figures/population_by_district.html')
-    show(gridplot([fig1], [fig2], [fig3]))
+    show(column(fig1, fig2, fig3))

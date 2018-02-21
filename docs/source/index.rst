@@ -12,12 +12,3 @@ Welcome to Vyborg historical town atlas's web page
 
    pages/vaesto
    pages/vaesto_kaupunginosittain
-
-
-
-Indices and tables
-==================
-
-* :ref:`genindex`
-* :ref:`modindex`
-* :ref:`search`

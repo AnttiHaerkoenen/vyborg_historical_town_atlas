@@ -13,7 +13,7 @@ if __name__ == '__main__':
 
     f = figure(
         plot_width=700,
-        plot_height=500
+        plot_height=400
     )
     f.line(x='year', y='population', source=source)
     f.title.align = 'center'

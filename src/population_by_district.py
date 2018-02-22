@@ -17,6 +17,9 @@ from bokeh.models import (
     ColorBar,
     BasicTicker
 )
+from bokeh.client import pull_session
+from bokeh.embed import server_session
+from flask import Flask, render_template
 
 from src.util import *
 
@@ -150,7 +153,7 @@ if __name__ == '__main__':
     step = 5
     y_range = 60.69, 60.738
     x_range = 28.688, 28.78
-    clip_shapefile_to_rectangle(target_fp='water.shp', output_fp='water_clip.shp', y_range=y_range, x_range=x_range)
+    # clip_shapefile_to_rectangle(target_fp='water.shp', output_fp='water_clip.shp', y_range=y_range, x_range=x_range)
     fig1 = plot_population_by_district(
         1870,
         group,

@@ -14,7 +14,7 @@ if __name__ == '__main__':
 
     fig = figure(
         plot_width=700,
-        plot_height=500,
+        plot_height=400,
         x_range=(1718, 1900),
     )
     line1 = fig.line(x='year', y='population_secular', source=source, color='blue', legend='väestö henkikirjojen mukaan')

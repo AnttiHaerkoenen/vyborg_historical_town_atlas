@@ -112,6 +112,8 @@ def plot_plots_bokeh(fp_plots, title=None, **kwargs):
     for factor, color in zip(factors, palette):
         fig.circle(x=[], y=[], fill_color=color, legend=factor)
     fig.legend.location = 'bottom_left'
+    fig.legend.background_fill_alpha = 1
+    fig.legend.border_line_color = 'black'
 
     return fig
 

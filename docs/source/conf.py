@@ -57,8 +57,8 @@ master_doc = 'index'
 
 # General information about the project.
 project = 'Vyborg historical town atlas'
-copyright = '2018, Haerkoenen et al.'
-author = 'Haerkoenen et al.'
+copyright = '2018, AnttiHaerkoenen et al.'
+author = 'AnttiHaerkoenen et al.'
 
 # The version info for the project you're documenting, acts as replacement for
 # |version| and |release|, also used in various other places throughout the
@@ -98,7 +98,7 @@ html_context = {
     'display_github': True,
     'github_user': 'AnttiHaerkoenen',
     'github_repo': 'vyborg_historical_town_atlas',
-    'github_version': 'master'
+    'github_version': 'master\docs'
 }
 # Theme options are theme-specific and customize the look and feel of a theme
 # further.  For a list of options available for each theme, see the
@@ -158,7 +158,7 @@ latex_elements = {
 #  author, documentclass [howto, manual, or own class]).
 latex_documents = [
     (master_doc, 'Vyborghistoricaltownatlas.tex', 'Vyborg historical town atlas Documentation',
-     'Haerkoenen et al.', 'manual'),
+     'AnttiHaerkoenen et al.', 'manual'),
 ]
 
 

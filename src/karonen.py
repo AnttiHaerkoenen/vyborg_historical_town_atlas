@@ -73,11 +73,6 @@ def get_stacked_bar(data: pd.DataFrame, *, data_col: str, x=0.0, y=0.0, width, h
     }
 
 
-def get_stacked_bars(data: pd.DataFrame, *, data_col: str, group_col: str, x=0.0, y=0.0, width, height) -> dict:
-    for group in set(data[group_col]):
-        group_data = data.loc[data[group_col] == group]
-
-
 def draw_population_map(
         *,
         population_file,
@@ -283,4 +278,4 @@ if __name__ == '__main__':
 
     output_file(r'../figures/karonen.html')
     show(gridplot([fig1, fig2, fig3], ncols=1))
-    show(gridplot([fig4, fig5, fig6], ncols=1))
+    # show(gridplot([fig4, fig5, fig6], ncols=1))

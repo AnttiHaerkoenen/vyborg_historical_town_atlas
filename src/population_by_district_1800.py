@@ -17,9 +17,6 @@ from bokeh.models import (
     ColorBar,
     BasicTicker
 )
-from bokeh.client import pull_session
-from bokeh.embed import server_session
-from flask import Flask, render_template
 
 from src.util import *
 

@@ -15,7 +15,7 @@ from bokeh.models import (
     LinearColorMapper,
     Title,
     ColorBar,
-    BasicTicker
+    BasicTicker,
 )
 
 from src.util import *
@@ -151,6 +151,7 @@ if __name__ == '__main__':
     y_range = 60.69, 60.738
     x_range = 28.688, 28.78
     # clip_shapefile_to_rectangle(target_fp='water.shp', output_fp='water_clip.shp', y_range=y_range, x_range=x_range)
+
     fig1 = plot_population_by_district(
         1870,
         group,
@@ -181,5 +182,6 @@ if __name__ == '__main__':
         y_range=x_range,
         x_range=y_range,
     )
+
     output_file(r'../figures/population_by_district.html')
     show(gridplot([fig1, fig2, fig3], ncols=1))

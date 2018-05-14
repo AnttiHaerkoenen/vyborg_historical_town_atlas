@@ -39,16 +39,15 @@ def plot_population_by_district(
     districts = combine_data(
         'districts_1929.shp',
         'population_1900s.csv',
-        sheet=year,
-        shp_on='NAME',
-        how='left'
+        how='left',
     )
-
+    districts = get_xy(districts)
+    districts = districts.fillna(0)
     districts_src = GeoJSONDataSource(geojson=districts.to_json())
     color_mapper = LinearColorMapper(
         palette=palette,
         low=low,
-        high=high
+        high=high,
     )
 
     fig = figure(
@@ -78,7 +77,7 @@ def plot_population_by_district(
         source=islands_src,
         fill_color='white',
         line_color=None,
-        line_width=0
+        line_width=0,
     )
     district_patch = fig.patches(
         xs='x',

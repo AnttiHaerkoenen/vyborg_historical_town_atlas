@@ -19,8 +19,8 @@ from src.util import *
 def plot_population_by_district(
         year,
         low: float=0,
-        high: float=10000,
-        step: float=500,
+        high: float=125,
+        step: float=1,
         copyright_=False,
         title=None,
 ) -> figure:
@@ -28,7 +28,7 @@ def plot_population_by_district(
     palette = list(reversed(palette))
     year = str(year)
 
-    water = gpd.read_file('water_clip.shp')
+    water = gpd.read_file('water.shp')
     water = get_xy(multipolygons_to_polygons(water))
     water_src = GeoJSONDataSource(geojson=water.to_json())
 
@@ -39,10 +39,15 @@ def plot_population_by_district(
     districts = combine_data(
         'districts_1929.shp',
         'population_1900s.csv',
+        shp_on='NAME',
+        stats_on='kaupunginosa',
         how='left',
     )
     districts = get_xy(districts)
+    districts = districts.dropna(subset=[year, ])
     districts = districts.fillna(0)
+    districts[year] = districts[year] / districts['SHAPE_Area'] / 1000000
+    print(districts)
     districts_src = GeoJSONDataSource(geojson=districts.to_json())
     color_mapper = LinearColorMapper(
         palette=palette,
@@ -54,8 +59,10 @@ def plot_population_by_district(
         title=title,
         x_axis_location=None,
         y_axis_location=None,
-        y_range=(60.69, 60.738),
-        x_range=(28.688, 28.78),
+        y_range=(60.686, 60.74),
+        x_range=(28.67, 28.81),
+        plot_height=500,
+        plot_width=600,
     )
     fig.grid.grid_line_color = None
     pvm = datetime.date(datetime.now())
@@ -101,13 +108,13 @@ def plot_population_by_district(
     )
     fig.add_layout(
         color_bar,
-        'right'
+        'right',
     )
 
     hover = HoverTool(renderers=[district_patch])
     hover.tooltips = [
-        ('Kaupunginosa', '@name'),
-        ('Väkiluku', '@yhteensa'),
+        ('Kaupunginosa', '@NAME'),
+        ('Asukastiheys', f'@{year}'),
         ('koordinaatit', '($y, $x)'),
     ]
     fig.add_tools(hover)
@@ -117,8 +124,9 @@ def plot_population_by_district(
 if __name__ == '__main__':
     os.chdir('..\data')
     logging.basicConfig(level=logging.INFO)
-    fig1 = plot_population_by_district(1910)
-    fig2 = plot_population_by_district(1920)
-    fig3 = plot_population_by_district(1930)
-    output_file(r'../figures/population_by_district.html')
-    show(gridplot([fig1, fig2, fig3], ncols=1))
+    fig1 = plot_population_by_district(1900)
+    fig2 = plot_population_by_district(1910)
+    fig3 = plot_population_by_district(1920)
+    fig4 = plot_population_by_district(1930)
+    output_file(r'../figures/population_by_district_1900.html')
+    show(gridplot([fig1, fig2, fig3, fig4], ncols=1))

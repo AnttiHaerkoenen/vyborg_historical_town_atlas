@@ -128,7 +128,7 @@ def plot_population_by_district(
     hover = HoverTool(renderers=[district_patch])
     hover.tooltips = [
         ('Kaupunginosa', '@name'),
-        ('Väkiluku', '@yhteensa'),
+        ('Asukasluku', '@yhteensa'),
         ('suomi', '@suomi_pct{0.0 a}'),
         ('ruotsi', '@ruotsi_pct{0.0 a}'),
         ('venäjä', '@venaja_pct{0.0 a}'),

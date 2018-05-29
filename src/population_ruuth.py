@@ -14,13 +14,23 @@ if __name__ == '__main__':
 
     fig = figure(
         plot_width=700,
-        plot_height=400,
+        plot_height=500,
         x_range=(1718, 1900),
     )
-    line1 = fig.line(x='year', y='population_secular', source=source, color='blue', legend='väestö henkikirjojen mukaan')
-    line2 = fig.line(x='year', y='population_church', source=source, color='green', legend='väestö, srk')
-    fig.title.align = 'center'
-    fig.title.text_font_size = '20pt'
+    line1 = fig.line(
+        x='year',
+        y='population_secular',
+        source=source,
+        color='blue',
+        legend='väestö henkikirjojen mukaan'
+    )
+    line2 = fig.line(
+        x='year',
+        y='population_church',
+        source=source,
+        color='green',
+        legend='väestö, srk'
+    )
     fig.xaxis.major_label_text_font_size = '16pt'
     fig.yaxis.major_label_text_font_size = '16pt'
 

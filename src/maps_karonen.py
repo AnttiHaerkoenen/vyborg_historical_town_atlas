@@ -163,10 +163,11 @@ def draw_population_map(
             fig.patches(**stack_data)
 
     for group, color in zip(groups, palette):
-        fig.circle(x=[], y=[], fill_color=color, legend=group)
+        fig.circle(x=[], y=[], size=15, fill_color=color, legend=group)
     fig.legend.location = 'bottom_left'
     fig.legend.background_fill_alpha = 1
     fig.legend.border_line_color = 'black'
+    fig.legend.label_text_font_size = "20pt"
     return fig
 
 

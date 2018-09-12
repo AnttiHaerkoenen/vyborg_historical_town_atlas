@@ -2,27 +2,41 @@ import os
 import logging
 
 import geopandas as gpd
-from bokeh.plotting import figure, show, output_file
+from bokeh.plotting import figure, show, output_file, save
 from bokeh.palettes import Category10_9 as palette
 from bokeh.transform import factor_cmap
 from bokeh.models import HoverTool, GeoJSONDataSource
 
 from src.util import multipolygons_to_polygons, get_xy
 
-district_name_mapper = {
-    '1': 'Linnoitus',
-    '2': 'P. Annan kruunu (Siikaniemi)',
-    '3': 'Salakkalahti',
-    '4': 'Repola',
-    '5': 'Pantsarlahti',
-    '6': 'Kaleva',
-    '7': 'Papula',
-    '8': 'Saunalahti',
-    '10': 'Neitsytniemi'
+district_name_mapper_fi = {
+    '1': "Linnoitus",
+    '2': "P. Annan kruunu (Siikaniemi)",
+    '3': "Salakkalahti",
+    '4': "Repola",
+    '5': "Pantsarlahti",
+    '6': "Kaleva",
+    '7': "Papula",
+    '8': "Saunalahti",
+    '10': "Neitsytniemi",
 }
 
+district_name_mapper_en = {
+    '1': "Old town",
+    '2': "St. Anna's crown",
+    '3': "Salakkalahti",
+    '4': "Repola",
+    '5': "Pantsarlahti",
+    '6': "Kaleva",
+    '7': "Papula",
+    '8': "Saunalahti",
+    '10': "Neitsytniemi",
+}
 
-def plot_plots_folium(fp_plots, title):
+district_name_mapper = district_name_mapper_en
+
+
+def mk_plots_folium(fp_plots, title=None):
     import folium
 
     plots = gpd.read_file(fp_plots)
@@ -121,10 +135,13 @@ def plot_plots_bokeh(fp_plots, title=None, **kwargs):
 if __name__ == '__main__':
     logging.basicConfig(level=logging.INFO)
     os.chdir(r'..\data')
-    fig = plot_plots_bokeh(
-        'plots_1878.shp',
-        plot_height=800,
-        plot_width=950,
-    )
+    fol = mk_plots_folium('plots_1878.shp')
+    os.chdir(r'..\figures')
+    fol.save('folium.html')
+    # fig = plot_plots_bokeh(
+    #     'plots_1878.shp',
+    #     plot_height=1600,
+    #     plot_width=1900,
+    # )
     output_file(r'../figures/plots_1878.html')
-    show(fig)
+    # show(fig)

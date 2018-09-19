@@ -168,6 +168,8 @@ def draw_population_map(
     fig.legend.background_fill_alpha = 1
     fig.legend.border_line_color = 'black'
     fig.legend.label_text_font_size = "20pt"
+    fig.legend.spacing = 20
+    fig.legend.padding = 20
     return fig
 
 

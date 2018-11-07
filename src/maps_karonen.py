@@ -21,6 +21,20 @@ Coordinates = namedtuple('Coordinates', 'x y')
 
 
 def get_mosaic(data_: pd.DataFrame, *, data_col: str, x=0.0, y=0.0, width, height) -> dict:
+    """
+    :param data_: DataFrame with data and color columns
+    :param data_col: Name of the column with plotted data
+    :param x: x coordinate for bottom right corner
+    :param y: y coordinate for bottom right corner
+    :param width: Width of plot
+    :param height: Height of plot
+    :return: Dictionary in the form:
+        {
+        'xs': list of lists of x coordinates in clockwise order,
+        'ys': list of lists of y coordinated in clockwise order,
+        'color': list(data['colors']),
+        }
+    """
     data = data_.sort_values(by=data_col, ascending=False)
     data = data.loc[data[data_col] > 0]
     rectangles = squarify.normalize_sizes(list(data[data_col]), width, height)
@@ -39,12 +53,39 @@ def get_mosaic(data_: pd.DataFrame, *, data_col: str, x=0.0, y=0.0, width, heigh
         r['y'],
     ] for r in rectangles]
 
-    colors = [c for c in data['colors']]
+    return {
+        'xs': xs,
+        'ys': ys,
+        'color': list(data['colors']),
+    }
+
+
+def get_bar(data: pd.DataFrame, *, data_col: str, x=0.0, y=0.0, width, height) -> dict:
+    data = data.loc[data[data_col] > 0][::-1]
+    lens = data[data_col] / data[data_col].sum() * height
+    xs, ys = [], []
+    last_x = x
+    for len_ in lens:
+        x_ = [
+            last_x,
+            last_x + width,
+            last_x + width,
+            last_x,
+        ]
+        last_x += width
+        xs.append(x_)
+        y_ = [
+            y + len_,
+            y + len_,
+            y,
+            y,
+        ]
+        ys.append(y_)
 
     return {
         'xs': xs,
         'ys': ys,
-        'color': colors,
+        'color': list(data['colors']),
     }
 
 
@@ -53,23 +94,27 @@ def get_stacked_bar(data: pd.DataFrame, *, data_col: str, x=0.0, y=0.0, width, h
     lens = data[data_col] / data[data_col].sum() * height
     xs, ys = [], []
     last_y = y
-    for l in lens:
-        xs.append([x, x + width, x + width, x])
+    for len_ in lens:
+        x_ = [
+            x,
+            x + width,
+            x + width,
+            x,
+        ]
+        xs.append(x_)
         y_ = [
-            last_y + l,
-            last_y + l,
+            last_y + len_,
+            last_y + len_,
             last_y,
             last_y,
         ]
-        last_y += l
+        last_y += len_
         ys.append(y_)
-
-    colors = [c for c in data['colors']]
 
     return {
         'xs': xs,
         'ys': ys,
-        'color': colors,
+        'color': list(data['colors']),
     }
 
 
@@ -82,12 +127,12 @@ def draw_population_map(
         locations,
         width,
         height=None,
-        type,
+        kind,
         **kwargs
 ):
-    _types = 'mosaic', 'stacked bar'
-    if type not in _types:
-        raise ValueError(f'Incorrect type parameter (Must be one of {_types})')
+    kinds = 'mosaic', 'stacked bar', 'bar'
+    if kind not in kinds:
+        raise ValueError(f'Incorrect type parameter (Must be one of {kinds})')
     data_ = pd.read_csv(population_file, index_col=0)
     totals = data_.sum(axis=0)
     palette = Category10_10[:len(data_)]
@@ -136,7 +181,7 @@ def draw_population_map(
         line_width=0
     )
 
-    if type.lower() == 'mosaic':
+    if kind.lower() == 'mosaic':
         for col, loc in locations.items():
             width = width * np.sqrt(totals[col] / totals.max())
             mosaic_data = get_mosaic(
@@ -149,7 +194,7 @@ def draw_population_map(
             )
             fig.patches(**mosaic_data)
 
-    if type.lower() == 'stacked bar':
+    if kind.lower() == 'stacked bar':
         for col, loc in locations.items():
             height = height * totals[col] / totals.max()
             stack_data = get_stacked_bar(
@@ -162,6 +207,19 @@ def draw_population_map(
             )
             fig.patches(**stack_data)
 
+    if kind.lower() == 'bar':
+        for col, loc in locations.items():
+            height = height * totals[col] / totals.max()
+            bar_data = get_bar(
+                data_,
+                data_col=col,
+                x=loc.x,
+                y=loc.y,
+                height=height,
+                width=width,
+            )
+            fig.patches(**bar_data)
+
     for group, color in zip(groups, palette):
         fig.circle(x=[], y=[], size=15, fill_color=color, legend=group)
     fig.legend.location = 'bottom_left'
@@ -173,7 +231,7 @@ def draw_population_map(
     return fig
 
 
-if __name__ == '__main__':
+def main():
     os.chdir(r'../data')
     kwargs = dict(
         water_file='water_1698.shp',
@@ -189,7 +247,7 @@ if __name__ == '__main__':
         y_range=(60.705, 60.717),
         x_range=(28.722, 28.743),
         width=0.002,
-        type='mosaic',
+        kind='mosaic',
         locations={
             'i': Coordinates(28.73, 60.7125),
             'ii': Coordinates(28.732, 60.7105),
@@ -205,7 +263,7 @@ if __name__ == '__main__':
         y_range=(60.705, 60.718),
         x_range=(28.72, 28.743),
         width=0.004,
-        type='mosaic',
+        kind='mosaic',
         locations={
             'Linnoitus': Coordinates(28.732, 60.7125),
             'Siikaniemi': Coordinates(28.723, 60.7125),
@@ -220,7 +278,7 @@ if __name__ == '__main__':
         y_range=(60.705, 60.718),
         x_range=(28.72, 28.743),
         width=0.004,
-        type='mosaic',
+        kind='mosaic',
         locations={
             'Linnoitus': Coordinates(28.732, 60.7125),
             'Siikaniemi': Coordinates(28.723, 60.7125),
@@ -234,9 +292,9 @@ if __name__ == '__main__':
         districts_file='districts_1637.shp',
         y_range=(60.705, 60.717),
         x_range=(28.722, 28.743),
-        width=0.0008,
+        width=0.0006,
         height=0.0015,
-        type='stacked bar',
+        kind='stacked bar',
         locations={
             'i': Coordinates(28.73, 60.7125),
             'ii': Coordinates(28.732, 60.7105),
@@ -251,9 +309,9 @@ if __name__ == '__main__':
         districts_file='districts_1703.shp',
         y_range=(60.705, 60.718),
         x_range=(28.72, 28.743),
-        width=0.0008,
+        width=0.0006,
         height=0.004,
-        type='stacked bar',
+        kind='stacked bar',
         locations={
             'Linnoitus': Coordinates(28.732, 60.712),
             'Siikaniemi': Coordinates(28.724, 60.7122),
@@ -267,9 +325,58 @@ if __name__ == '__main__':
         districts_file='districts_1703.shp',
         y_range=(60.705, 60.718),
         x_range=(28.72, 28.743),
-        width=0.0008,
+        width=0.0006,
         height=0.004,
-        type='stacked bar',
+        kind='stacked bar',
+        locations={
+            'Linnoitus': Coordinates(28.732, 60.712),
+            'Siikaniemi': Coordinates(28.724, 60.7122),
+            'Valli': Coordinates(28.737, 60.710),
+            'Pantsarlahti': Coordinates(28.738, 60.7059),
+        },
+        **kwargs
+    )
+    fig7 = draw_population_map(
+        population_file='population_1570.csv',
+        districts_file='districts_1637.shp',
+        y_range=(60.705, 60.717),
+        x_range=(28.722, 28.743),
+        width=0.0002,
+        height=0.0015,
+        kind='bar',
+        locations={
+            'i': Coordinates(28.73, 60.7125),
+            'ii': Coordinates(28.732, 60.7105),
+            'iii': Coordinates(28.7315, 60.7137),
+            'iv': Coordinates(28.734, 60.713),
+            'Valli': Coordinates(28.737, 60.7105),
+        },
+        **kwargs
+    )
+    fig8 = draw_population_map(
+        population_file='population_1630.csv',
+        districts_file='districts_1703.shp',
+        y_range=(60.705, 60.718),
+        x_range=(28.72, 28.743),
+        width=0.0002,
+        height=0.004,
+        kind='bar',
+        locations={
+            'Linnoitus': Coordinates(28.732, 60.712),
+            'Siikaniemi': Coordinates(28.724, 60.7122),
+            'Valli': Coordinates(28.737, 60.710),
+            'Pantsarlahti': Coordinates(28.738, 60.7057),
+        },
+        **kwargs
+    )
+    fig9 = draw_population_map(
+        population_file='population_1700.csv',
+        districts_file='districts_1703.shp',
+        y_range=(60.705, 60.718),
+        x_range=(28.72, 28.743),
+        width=0.0002,
+        height=0.004,
+        kind='bar',
         locations={
             'Linnoitus': Coordinates(28.732, 60.712),
             'Siikaniemi': Coordinates(28.724, 60.7122),
@@ -280,5 +387,10 @@ if __name__ == '__main__':
     )
 
     output_file(r'../figures/karonen.html')
-    show(gridplot([fig1, fig2, fig3], ncols=1))
+    # show(gridplot([fig1, fig2, fig3], ncols=1))
     # show(gridplot([fig4, fig5, fig6], ncols=1))
+    show(gridplot([fig7, fig8, fig9], ncols=1))
+
+
+if __name__ == '__main__':
+    main()

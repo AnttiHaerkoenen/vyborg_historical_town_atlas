@@ -341,7 +341,7 @@ def main():
         districts_file='districts_1637.shp',
         y_range=(60.705, 60.717),
         x_range=(28.722, 28.743),
-        width=0.0002,
+        width=0.00025,
         height=0.0015,
         kind='bar',
         locations={
@@ -358,7 +358,7 @@ def main():
         districts_file='districts_1703.shp',
         y_range=(60.705, 60.718),
         x_range=(28.72, 28.743),
-        width=0.0002,
+        width=0.00025,
         height=0.004,
         kind='bar',
         locations={
@@ -374,7 +374,7 @@ def main():
         districts_file='districts_1703.shp',
         y_range=(60.705, 60.718),
         x_range=(28.72, 28.743),
-        width=0.0002,
+        width=0.00025,
         height=0.004,
         kind='bar',
         locations={

@@ -225,9 +225,10 @@ def draw_population_map(
     fig.legend.location = 'bottom_left'
     fig.legend.background_fill_alpha = 1
     fig.legend.border_line_color = 'black'
-    fig.legend.label_text_font_size = "20pt"
+    fig.legend.label_text_font_size = "24pt"
     fig.legend.spacing = 20
     fig.legend.padding = 20
+    fig.title.text_font_size = "30px"
     return fig
 
 
@@ -246,7 +247,8 @@ def main():
         districts_file='districts_1637.shp',
         y_range=(60.705, 60.717),
         x_range=(28.722, 28.743),
-        width=0.002,
+        title='1570',
+        width=0.004,
         kind='mosaic',
         locations={
             'i': Coordinates(28.73, 60.7125),
@@ -262,6 +264,7 @@ def main():
         districts_file='districts_1703.shp',
         y_range=(60.705, 60.718),
         x_range=(28.72, 28.743),
+        title='1630',
         width=0.004,
         kind='mosaic',
         locations={
@@ -279,6 +282,7 @@ def main():
         x_range=(28.72, 28.743),
         width=0.004,
         kind='mosaic',
+        title='1700',
         locations={
             'Linnoitus': Coordinates(28.732, 60.7125),
             'Siikaniemi': Coordinates(28.723, 60.7125),
@@ -292,12 +296,13 @@ def main():
         districts_file='districts_1637.shp',
         y_range=(60.705, 60.717),
         x_range=(28.722, 28.743),
+        title='1570',
         width=0.0006,
         height=0.0015,
         kind='stacked bar',
         locations={
             'i': Coordinates(28.73, 60.7125),
-            'ii': Coordinates(28.732, 60.7105),
+            'ii': Coordinates(28.732, 60.711),
             'iii': Coordinates(28.7315, 60.7137),
             'iv': Coordinates(28.734, 60.713),
             'Valli': Coordinates(28.737, 60.7105),
@@ -309,12 +314,13 @@ def main():
         districts_file='districts_1703.shp',
         y_range=(60.705, 60.718),
         x_range=(28.72, 28.743),
+        title='1630',
         width=0.0006,
-        height=0.004,
+        height=0.0015,
         kind='stacked bar',
         locations={
             'Linnoitus': Coordinates(28.732, 60.712),
-            'Siikaniemi': Coordinates(28.724, 60.7122),
+            'Siikaniemi': Coordinates(28.724, 60.712),
             'Valli': Coordinates(28.737, 60.710),
             'Pantsarlahti': Coordinates(28.738, 60.7057),
         },
@@ -325,12 +331,13 @@ def main():
         districts_file='districts_1703.shp',
         y_range=(60.705, 60.718),
         x_range=(28.72, 28.743),
+        title='1700',
         width=0.0006,
-        height=0.004,
+        height=0.0015,
         kind='stacked bar',
         locations={
             'Linnoitus': Coordinates(28.732, 60.712),
-            'Siikaniemi': Coordinates(28.724, 60.7122),
+            'Siikaniemi': Coordinates(28.724, 60.712),
             'Valli': Coordinates(28.737, 60.710),
             'Pantsarlahti': Coordinates(28.738, 60.7059),
         },
@@ -341,12 +348,13 @@ def main():
         districts_file='districts_1637.shp',
         y_range=(60.705, 60.717),
         x_range=(28.722, 28.743),
+        title='1570',
         width=0.00025,
-        height=0.0015,
+        height=0.004,
         kind='bar',
         locations={
             'i': Coordinates(28.73, 60.7125),
-            'ii': Coordinates(28.732, 60.7105),
+            'ii': Coordinates(28.732, 60.711),
             'iii': Coordinates(28.7315, 60.7137),
             'iv': Coordinates(28.734, 60.713),
             'Valli': Coordinates(28.737, 60.7105),
@@ -358,12 +366,13 @@ def main():
         districts_file='districts_1703.shp',
         y_range=(60.705, 60.718),
         x_range=(28.72, 28.743),
+        title='1630',
         width=0.00025,
         height=0.004,
         kind='bar',
         locations={
             'Linnoitus': Coordinates(28.732, 60.712),
-            'Siikaniemi': Coordinates(28.724, 60.7122),
+            'Siikaniemi': Coordinates(28.724, 60.712),
             'Valli': Coordinates(28.737, 60.710),
             'Pantsarlahti': Coordinates(28.738, 60.7057),
         },
@@ -374,12 +383,13 @@ def main():
         districts_file='districts_1703.shp',
         y_range=(60.705, 60.718),
         x_range=(28.72, 28.743),
+        title='1700',
         width=0.00025,
         height=0.004,
         kind='bar',
         locations={
             'Linnoitus': Coordinates(28.732, 60.712),
-            'Siikaniemi': Coordinates(28.724, 60.7122),
+            'Siikaniemi': Coordinates(28.724, 60.712),
             'Valli': Coordinates(28.737, 60.710),
             'Pantsarlahti': Coordinates(28.738, 60.7059),
         },
@@ -388,7 +398,7 @@ def main():
 
     output_file(r'../figures/karonen.html')
     # show(gridplot([fig1, fig2, fig3], ncols=1))
-    # show(gridplot([fig4, fig5, fig6], ncols=1))
+    show(gridplot([fig4, fig5, fig6], ncols=1))
     show(gridplot([fig7, fig8, fig9], ncols=1))
 
 

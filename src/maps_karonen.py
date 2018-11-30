@@ -354,7 +354,7 @@ def main():
         kind='bar',
         locations={
             'i': Coordinates(28.73, 60.7125),
-            'ii': Coordinates(28.732, 60.711),
+            'ii': Coordinates(28.732, 60.7105),
             'iii': Coordinates(28.7315, 60.7137),
             'iv': Coordinates(28.734, 60.713),
             'Valli': Coordinates(28.737, 60.7105),

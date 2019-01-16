@@ -5,10 +5,9 @@ import os
 import rasterio
 
 
-
 def clip_histogram(input_file, output_file, min_val=-32767, max_val=32768):
     try:
-        with rasterio.open(input_file) as fin:
+        with rasterio.open(input_file, driver='GTiff') as fin:
             b = fin.read(1)
             image = fin.read()
             h, w = fin.shape
@@ -38,6 +37,7 @@ def clip_histogram(input_file, output_file, min_val=-32767, max_val=32768):
 
 
 def main():
+    os.chdir(r"..\data")
     print("******************************\n"
           "*** Raster clipping script ***\n"
           "******************************\n")
@@ -45,15 +45,11 @@ def main():
     while True:
         input_file = input("Input original raster file: ")
         if not input_file:
-            return
+            continue
         output_file = input("Input new raster file: ")
         if not output_file:
-            return
-
-        if os.path.isfile(input_file):
-            break
-
-        print("File(s) do not exist")
+            continue
+        break
 
     while True:
         max_val = input("Input maximum cell value: ")

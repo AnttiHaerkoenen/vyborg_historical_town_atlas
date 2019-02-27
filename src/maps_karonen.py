@@ -398,7 +398,7 @@ def main():
 
     output_file(r'../figures/karonen.html')
     # show(gridplot([fig1, fig2, fig3], ncols=1))
-    show(gridplot([fig4, fig5, fig6], ncols=1))
+    # show(gridplot([fig4, fig5, fig6], ncols=1))
     show(gridplot([fig7, fig8, fig9], ncols=1))
 
 

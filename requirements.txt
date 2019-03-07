@@ -9,3 +9,4 @@ pycrs
 shapely
 folium
 squarify
+fire

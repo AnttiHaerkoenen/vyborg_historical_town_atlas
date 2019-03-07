@@ -1,11 +1,16 @@
 #!/usr/bin/env python
 
-import os
-
 import rasterio
+import fire
 
 
 def clip_histogram(input_file, output_file, min_val=-32767, max_val=32768):
+    if max_val not in range(-32767, 32768):
+        max_val = 32768
+
+    if min_val not in range(-32767, 32768):
+        min_val = -32767
+
     try:
         with rasterio.open(input_file, driver='GTiff') as fin:
             b = fin.read(1)
@@ -35,42 +40,8 @@ def clip_histogram(input_file, output_file, min_val=-32767, max_val=32768):
     except TypeError as type:
         raise type
 
-
-def main():
-    os.chdir(r"..\data")
-    print("******************************\n"
-          "*** Raster clipping script ***\n"
-          "******************************\n")
-
-    while True:
-        input_file = input("Input original raster file: ")
-        if not input_file:
-            continue
-        output_file = input("Input new raster file: ")
-        if not output_file:
-            continue
-        break
-
-    while True:
-        max_val = input("Input maximum cell value: ")
-        min_val = input("Input minimum cell value: ")
-
-        try:
-            max_val = int(max_val) if max_val else None
-            min_val = int(min_val) if min_val else None
-            break
-        except ValueError:
-            print("Incorrect value! Enter a number.")
-
-    if max_val not in range(-32767, 32768):
-        max_val = 32768
-
-    if min_val not in range(-32767, 32768):
-        min_val = -32767
-
-    clip_histogram(input_file, output_file, min_val, max_val)
     print("Raster manipulation successful.")
 
 
 if __name__ == '__main__':
-    main()
+    fire.Fire(clip_histogram)

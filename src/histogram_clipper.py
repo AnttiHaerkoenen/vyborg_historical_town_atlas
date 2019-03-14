@@ -37,8 +37,8 @@ def clip_histogram(input_file, output_file, min_val=-32767, max_val=32768):
             fout.write(image)
     except IOError as ioe:
         raise ioe
-    except TypeError as type:
-        raise type
+    except TypeError as tye:
+        raise tye
 
     print("Raster manipulation successful.")
 

@@ -10,9 +10,8 @@ from bokeh.layouts import gridplot
 from bokeh.palettes import Category10_10
 from bokeh.models import (
     HoverTool,
+    Label,
     GeoJSONDataSource,
-    Title,
-    BasicTicker
 )
 
 from src.util import *
@@ -60,23 +59,34 @@ def get_mosaic(data_: pd.DataFrame, *, data_col: str, x=0.0, y=0.0, width, heigh
     }
 
 
-def get_bar(data: pd.DataFrame, *, data_col: str, x=0.0, y=0.0, width, height) -> dict:
+def get_bar(
+        data: pd.DataFrame,
+        *,
+        data_col: str,
+        x=0.0,
+        y=0.0,
+        width,
+        height,
+) -> dict:
     data = data.loc[data[data_col] > 0][::-1]
     lens = data[data_col] / data[data_col].sum() * height
     xs, ys = [], []
-    last_x = x
+
+    old_x = x
     for len_ in lens:
+        new_x = old_x + width
         x_ = [
-            last_x,
-            last_x + width,
-            last_x + width,
-            last_x,
+            old_x,
+            new_x,
+            new_x,
+            old_x,
         ]
-        last_x += width
         xs.append(x_)
+        old_x = new_x
+        y_upper = y + len_
         y_ = [
-            y + len_,
-            y + len_,
+            y_upper,
+            y_upper,
             y,
             y,
         ]
@@ -85,6 +95,7 @@ def get_bar(data: pd.DataFrame, *, data_col: str, x=0.0, y=0.0, width, height) -
     return {
         'xs': xs,
         'ys': ys,
+        'values': list(data[data_col]),
         'color': list(data['colors']),
     }
 
@@ -127,6 +138,7 @@ def draw_population_map(
         locations,
         width,
         height=None,
+        label_x_offset=0.0,
         kind,
         **kwargs
 ):
@@ -218,7 +230,16 @@ def draw_population_map(
                 height=height,
                 width=width,
             )
+            values = bar_data.pop('values')
             fig.patches(**bar_data)
+            for i in range(len(values)):
+                label = Label(
+                    x=bar_data['xs'][i][0],
+                    y=bar_data['ys'][i][0],
+                    text=str(values[i]),
+                    x_offset=label_x_offset,
+                )
+                fig.add_layout(label)
 
     for group, color in zip(groups, palette):
         fig.circle(x=[], y=[], size=15, fill_color=color, legend=group)
@@ -351,6 +372,7 @@ def main():
         title='1570',
         width=0.00025,
         height=0.004,
+        label_x_offset=4,
         kind='bar',
         locations={
             'i': Coordinates(28.73, 60.7125),
@@ -369,6 +391,7 @@ def main():
         title='1630',
         width=0.00025,
         height=0.004,
+        label_x_offset=4,
         kind='bar',
         locations={
             'Linnoitus': Coordinates(28.732, 60.712),
@@ -386,6 +409,7 @@ def main():
         title='1700',
         width=0.00025,
         height=0.004,
+        label_x_offset=4,
         kind='bar',
         locations={
             'Linnoitus': Coordinates(28.732, 60.712),

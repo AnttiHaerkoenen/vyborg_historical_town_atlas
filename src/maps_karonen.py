@@ -12,6 +12,8 @@ from bokeh.models import (
     HoverTool,
     Label,
     GeoJSONDataSource,
+    ColumnDataSource,
+    Quad,
 )
 
 from src.util import *
@@ -69,32 +71,14 @@ def get_bar(
         height,
 ) -> dict:
     data = data.loc[data[data_col] > 0][::-1]
-    lens = data[data_col] / data[data_col].sum() * height
-    xs, ys = [], []
-
-    old_x = x
-    for len_ in lens:
-        new_x = old_x + width
-        x_ = [
-            old_x,
-            new_x,
-            new_x,
-            old_x,
-        ]
-        xs.append(x_)
-        old_x = new_x
-        y_upper = y + len_
-        y_ = [
-            y_upper,
-            y_upper,
-            y,
-            y,
-        ]
-        ys.append(y_)
+    heights = data[data_col] / data[data_col].sum() * height
+    bars = len(heights)
 
     return {
-        'xs': xs,
-        'ys': ys,
+        'left': [x + width * i for i in range(bars)],
+        'right': [x + width * (i + 1) for i in range(bars)],
+        'top': [y + h for h in heights],
+        'bottom': [y] * bars,
         'values': list(data[data_col]),
         'color': list(data['colors']),
     }
@@ -182,7 +166,7 @@ def draw_population_map(
         source=islands_src,
         fill_color='white',
         line_color=None,
-        line_width=0
+        line_width=0,
     )
     fig.patches(
         xs='x',
@@ -190,7 +174,7 @@ def draw_population_map(
         source=districts_src,
         fill_color=None,
         line_color='black',
-        line_width=0
+        line_width=0,
     )
 
     if kind.lower() == 'mosaic':
@@ -221,25 +205,40 @@ def draw_population_map(
 
     if kind.lower() == 'bar':
         for col, loc in locations.items():
-            height = height * totals[col] / totals.max()
-            bar_data = get_bar(
+            source = ColumnDataSource(get_bar(
                 data_,
                 data_col=col,
                 x=loc.x,
                 y=loc.y,
                 height=height,
                 width=width,
+            ))
+            glyph = Quad(
+                left='left',
+                right='right',
+                top='top',
+                bottom='bottom',
+                fill_color='color',
             )
-            values = bar_data.pop('values')
-            fig.patches(**bar_data)
-            for i in range(len(values)):
-                label = Label(
-                    x=bar_data['xs'][i][0],
-                    y=bar_data['ys'][i][0],
-                    text=str(values[i]),
-                    x_offset=label_x_offset,
-                )
-                fig.add_layout(label)
+            fig.add_glyph(source, glyph)
+            # bar_data = get_bar(
+            #     data_,
+            #     data_col=col,
+            #     x=loc.x,
+            #     y=loc.y,
+            #     height=height,
+            #     width=width,
+            # )
+            # values = bar_data.pop('values')
+            # fig.patches(**bar_data)
+            # for i in range(len(values)):
+            #     label = Label(
+            #         x=bar_data['xs'][i][0],
+            #         y=bar_data['ys'][i][0],
+            #         text=str(values[i]),
+            #         x_offset=label_x_offset,
+            #     )
+            #     fig.add_layout(label)
 
     for group, color in zip(groups, palette):
         fig.circle(x=[], y=[], size=15, fill_color=color, legend=group)
@@ -255,6 +254,8 @@ def draw_population_map(
 
 def main():
     os.chdir(r'../data')
+    width = 0.00025
+    height = 0.0025
     kwargs = dict(
         water_file='water_1698.shp',
         islands_file='islands_1698.shp',
@@ -263,14 +264,17 @@ def main():
         x_axis_location=None,
         y_axis_location=None,
     )
+
     fig1 = draw_population_map(
         population_file='population_1570.csv',
         districts_file='districts_1637.shp',
         y_range=(60.705, 60.717),
         x_range=(28.722, 28.743),
         title='1570',
-        width=0.004,
-        kind='mosaic',
+        width=width,
+        height=height,
+        label_x_offset=0,
+        kind='bar',
         locations={
             'i': Coordinates(28.73, 60.7125),
             'ii': Coordinates(28.732, 60.7105),
@@ -286,12 +290,14 @@ def main():
         y_range=(60.705, 60.718),
         x_range=(28.72, 28.743),
         title='1630',
-        width=0.004,
-        kind='mosaic',
+        width=width,
+        height=height,
+        label_x_offset=0,
+        kind='bar',
         locations={
-            'Linnoitus': Coordinates(28.732, 60.7125),
-            'Siikaniemi': Coordinates(28.723, 60.7125),
-            'Valli': Coordinates(28.737, 60.7102),
+            'Linnoitus': Coordinates(28.732, 60.712),
+            'Siikaniemi': Coordinates(28.724, 60.712),
+            'Valli': Coordinates(28.737, 60.710),
             'Pantsarlahti': Coordinates(28.738, 60.7057),
         },
         **kwargs
@@ -301,115 +307,10 @@ def main():
         districts_file='districts_1703.shp',
         y_range=(60.705, 60.718),
         x_range=(28.72, 28.743),
-        width=0.004,
-        kind='mosaic',
         title='1700',
-        locations={
-            'Linnoitus': Coordinates(28.732, 60.7125),
-            'Siikaniemi': Coordinates(28.723, 60.7125),
-            'Valli': Coordinates(28.737, 60.7102),
-            'Pantsarlahti': Coordinates(28.738, 60.7059),
-        },
-        **kwargs
-    )
-    fig4 = draw_population_map(
-        population_file='population_1570.csv',
-        districts_file='districts_1637.shp',
-        y_range=(60.705, 60.717),
-        x_range=(28.722, 28.743),
-        title='1570',
-        width=0.0006,
-        height=0.0015,
-        kind='stacked bar',
-        locations={
-            'i': Coordinates(28.73, 60.7125),
-            'ii': Coordinates(28.732, 60.711),
-            'iii': Coordinates(28.7315, 60.7137),
-            'iv': Coordinates(28.734, 60.713),
-            'Valli': Coordinates(28.737, 60.7105),
-        },
-        **kwargs
-    )
-    fig5 = draw_population_map(
-        population_file='population_1630.csv',
-        districts_file='districts_1703.shp',
-        y_range=(60.705, 60.718),
-        x_range=(28.72, 28.743),
-        title='1630',
-        width=0.0006,
-        height=0.0015,
-        kind='stacked bar',
-        locations={
-            'Linnoitus': Coordinates(28.732, 60.712),
-            'Siikaniemi': Coordinates(28.724, 60.712),
-            'Valli': Coordinates(28.737, 60.710),
-            'Pantsarlahti': Coordinates(28.738, 60.7057),
-        },
-        **kwargs
-    )
-    fig6 = draw_population_map(
-        population_file='population_1700.csv',
-        districts_file='districts_1703.shp',
-        y_range=(60.705, 60.718),
-        x_range=(28.72, 28.743),
-        title='1700',
-        width=0.0006,
-        height=0.0015,
-        kind='stacked bar',
-        locations={
-            'Linnoitus': Coordinates(28.732, 60.712),
-            'Siikaniemi': Coordinates(28.724, 60.712),
-            'Valli': Coordinates(28.737, 60.710),
-            'Pantsarlahti': Coordinates(28.738, 60.7059),
-        },
-        **kwargs
-    )
-    fig7 = draw_population_map(
-        population_file='population_1570.csv',
-        districts_file='districts_1637.shp',
-        y_range=(60.705, 60.717),
-        x_range=(28.722, 28.743),
-        title='1570',
-        width=0.00025,
-        height=0.004,
-        label_x_offset=4,
-        kind='bar',
-        locations={
-            'i': Coordinates(28.73, 60.7125),
-            'ii': Coordinates(28.732, 60.7105),
-            'iii': Coordinates(28.7315, 60.7137),
-            'iv': Coordinates(28.734, 60.713),
-            'Valli': Coordinates(28.737, 60.7105),
-        },
-        **kwargs
-    )
-    fig8 = draw_population_map(
-        population_file='population_1630.csv',
-        districts_file='districts_1703.shp',
-        y_range=(60.705, 60.718),
-        x_range=(28.72, 28.743),
-        title='1630',
-        width=0.00025,
-        height=0.004,
-        label_x_offset=4,
-        kind='bar',
-        locations={
-            'Linnoitus': Coordinates(28.732, 60.712),
-            'Siikaniemi': Coordinates(28.724, 60.712),
-            'Valli': Coordinates(28.737, 60.710),
-            'Pantsarlahti': Coordinates(28.738, 60.7057),
-        },
-        **kwargs
-    )
-    fig9 = draw_population_map(
-        population_file='population_1700.csv',
-        districts_file='districts_1703.shp',
-        y_range=(60.705, 60.718),
-        x_range=(28.72, 28.743),
-        title='1700',
-        width=0.00025,
-        height=0.004,
-        label_x_offset=4,
+        width=width,
+        height=height,
+        label_x_offset=0,
         kind='bar',
         locations={
             'Linnoitus': Coordinates(28.732, 60.712),
@@ -421,9 +322,7 @@ def main():
     )
 
     output_file(r'../figures/karonen.html')
-    # show(gridplot([fig1, fig2, fig3], ncols=1))
-    # show(gridplot([fig4, fig5, fig6], ncols=1))
-    show(gridplot([fig7, fig8, fig9], ncols=1))
+    show(gridplot([fig1, fig2, fig3], ncols=1))
 
 
 if __name__ == '__main__':

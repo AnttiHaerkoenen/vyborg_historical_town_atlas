@@ -192,25 +192,26 @@ def draw_population_map(
 
     if kind.lower() == 'stacked bar':
         for col, loc in locations.items():
-            height = height * totals[col] / totals.max()
+            loc_height = height * totals[col] / totals.max()
             stack_data = get_stacked_bar(
                 data_,
                 data_col=col,
                 x=loc.x,
                 y=loc.y,
-                height=height,
+                height=loc_height,
                 width=width,
             )
             fig.patches(**stack_data)
 
     if kind.lower() == 'bar':
         for col, loc in locations.items():
+            loc_height = height * totals[col] / totals.max()
             source = ColumnDataSource(get_bar(
                 data_,
                 data_col=col,
                 x=loc.x,
                 y=loc.y,
-                height=height,
+                height=loc_height,
                 width=width,
             ))
             glyph = Quad(

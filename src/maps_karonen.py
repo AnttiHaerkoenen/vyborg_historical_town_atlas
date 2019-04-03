@@ -10,7 +10,7 @@ from bokeh.layouts import gridplot
 from bokeh.palettes import Category10_10
 from bokeh.models import (
     HoverTool,
-    Label,
+    LabelSet,
     GeoJSONDataSource,
     ColumnDataSource,
     Quad,
@@ -222,6 +222,13 @@ def draw_population_map(
                 fill_color='color',
             )
             fig.add_glyph(source, glyph)
+            labels = LabelSet(
+                x='left',
+                y='top',
+                text='values',
+                source=source,
+            )
+            fig.add_layout(labels)
             # bar_data = get_bar(
             #     data_,
             #     data_col=col,

@@ -14,7 +14,7 @@ from bokeh.models import (
     GeoJSONDataSource,
     ColumnDataSource,
     Quad,
-)
+    VBar)
 
 from src.util import *
 
@@ -122,7 +122,6 @@ def draw_population_map(
         locations,
         width,
         height=None,
-        label_x_offset=0.0,
         kind,
         **kwargs
 ):
@@ -214,9 +213,16 @@ def draw_population_map(
                 height=loc_height,
                 width=width,
             ))
-            glyph = Quad(
-                left='left',
-                right='right',
+            # glyph = Quad(
+            #     left='left',
+            #     right='right',
+            #     top='top',
+            #     bottom='bottom',
+            #     fill_color='color',
+            # )
+            glyph = VBar(
+                x='left',
+                width=width,
                 top='top',
                 bottom='bottom',
                 fill_color='color',
@@ -226,6 +232,7 @@ def draw_population_map(
                 x='left',
                 y='top',
                 text='values',
+                text_align='center',
                 source=source,
             )
             fig.add_layout(labels)
@@ -281,7 +288,6 @@ def main():
         title='1570',
         width=width,
         height=height,
-        label_x_offset=0,
         kind='bar',
         locations={
             'i': Coordinates(28.73, 60.7125),
@@ -300,7 +306,6 @@ def main():
         title='1630',
         width=width,
         height=height,
-        label_x_offset=0,
         kind='bar',
         locations={
             'Linnoitus': Coordinates(28.732, 60.712),
@@ -318,7 +323,6 @@ def main():
         title='1700',
         width=width,
         height=height,
-        label_x_offset=0,
         kind='bar',
         locations={
             'Linnoitus': Coordinates(28.732, 60.712),

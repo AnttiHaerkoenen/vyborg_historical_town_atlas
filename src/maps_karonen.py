@@ -8,6 +8,7 @@ import numpy as np
 from bokeh.plotting import figure, show, output_file
 from bokeh.layouts import gridplot
 from bokeh.palettes import Category10_10
+from bokeh.io import export_png, export_svgs
 from bokeh.models import (
     HoverTool,
     LabelSet,
@@ -120,6 +121,11 @@ def draw_population_map(
         locations,
         width,
         height=None,
+        label_font_size,
+        add_legend=False,
+        legend_font_size,
+        legend_padding,
+        legend_spacing,
         kind,
         **kwargs
 ):
@@ -224,19 +230,24 @@ def draw_population_map(
                 y='top',
                 text='values',
                 text_align='center',
+                text_font_size=label_font_size,
                 source=source,
             )
             fig.add_layout(labels)
 
-    for group, color in zip(groups, palette):
-        fig.circle(x=[], y=[], size=15, fill_color=color, legend=group)
-    fig.legend.location = 'bottom_left'
-    fig.legend.background_fill_alpha = 1
-    fig.legend.border_line_color = 'black'
-    fig.legend.label_text_font_size = "24pt"
-    fig.legend.spacing = 20
-    fig.legend.padding = 20
-    fig.title.text_font_size = "30px"
+    if add_legend:
+        for group, color in zip(groups, palette):
+            fig.circle(x=[], y=[], size=12, fill_color=color, legend=group)
+
+        fig.legend.location = 'bottom_left'
+        fig.legend.background_fill_alpha = 1
+        fig.legend.border_line_color = 'black'
+        fig.legend.label_text_font_size = legend_font_size
+        fig.legend.spacing = legend_spacing
+        fig.legend.padding = legend_padding
+
+        fig.title.text_font_size = '30px'
+
     return fig
 
 
@@ -244,13 +255,19 @@ def main():
     os.chdir(r'../data')
     width = 0.00025
     height = 0.0025
+    label_font_size = "11pt"
+    add_legend = False
+    legend_font_size = "24pt"
+    legend_spacing = 20
+    legend_padding = 20
     kwargs = dict(
         water_file='water_1698.shp',
         islands_file='islands_1698.shp',
-        plot_height=2000,
-        plot_width=2000,
+        plot_height=2400,
+        plot_width=2400,
         x_axis_location=None,
         y_axis_location=None,
+        # output_backend='svg',
     )
 
     fig1 = draw_population_map(
@@ -262,6 +279,11 @@ def main():
         width=width,
         height=height,
         kind='bar',
+        label_font_size=label_font_size,
+        add_legend=add_legend,
+        legend_font_size=legend_font_size,
+        legend_padding=legend_padding,
+        legend_spacing=legend_spacing,
         locations={
             'i': Coordinates(28.73, 60.7125),
             'ii': Coordinates(28.732, 60.7105),
@@ -279,6 +301,11 @@ def main():
         title='1630',
         width=width,
         height=height,
+        label_font_size=label_font_size,
+        add_legend=add_legend,
+        legend_font_size=legend_font_size,
+        legend_padding=legend_padding,
+        legend_spacing=legend_spacing,
         kind='bar',
         locations={
             'Linnoitus': Coordinates(28.732, 60.712),
@@ -296,6 +323,11 @@ def main():
         title='1700',
         width=width,
         height=height,
+        label_font_size=label_font_size,
+        add_legend=add_legend,
+        legend_font_size=legend_font_size,
+        legend_padding=legend_padding,
+        legend_spacing=legend_spacing,
         kind='bar',
         locations={
             'Linnoitus': Coordinates(28.732, 60.712),
@@ -306,7 +338,14 @@ def main():
         **kwargs
     )
 
-    output_file(r'../figures/karonen.html')
+    os.chdir(r'../figures')
+    # export_svgs(fig1, filename="1570.svg")
+    # export_svgs(fig2, filename="1630.svg")
+    # export_svgs(fig3, filename="1700.svg")
+    export_png(fig1, filename="1570.png")
+    export_png(fig2, filename="1630.png")
+    export_png(fig3, filename="1700.png")
+    output_file(r'karonen.html')
     show(gridplot([fig1, fig2, fig3], ncols=1))
 
 

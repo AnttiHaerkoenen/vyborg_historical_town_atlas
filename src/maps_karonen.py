@@ -13,7 +13,6 @@ from bokeh.models import (
     LabelSet,
     GeoJSONDataSource,
     ColumnDataSource,
-    Quad,
     VBar)
 
 from src.util import *
@@ -75,8 +74,7 @@ def get_bar(
     bars = len(heights)
 
     return {
-        'left': [x + width * i for i in range(bars)],
-        'right': [x + width * (i + 1) for i in range(bars)],
+        'x': [x + width * i for i in range(bars)],
         'top': [y + h for h in heights],
         'bottom': [y] * bars,
         'values': list(data[data_col]),
@@ -213,15 +211,8 @@ def draw_population_map(
                 height=loc_height,
                 width=width,
             ))
-            # glyph = Quad(
-            #     left='left',
-            #     right='right',
-            #     top='top',
-            #     bottom='bottom',
-            #     fill_color='color',
-            # )
             glyph = VBar(
-                x='left',
+                x='x',
                 width=width,
                 top='top',
                 bottom='bottom',
@@ -229,31 +220,13 @@ def draw_population_map(
             )
             fig.add_glyph(source, glyph)
             labels = LabelSet(
-                x='left',
+                x='x',
                 y='top',
                 text='values',
                 text_align='center',
                 source=source,
             )
             fig.add_layout(labels)
-            # bar_data = get_bar(
-            #     data_,
-            #     data_col=col,
-            #     x=loc.x,
-            #     y=loc.y,
-            #     height=height,
-            #     width=width,
-            # )
-            # values = bar_data.pop('values')
-            # fig.patches(**bar_data)
-            # for i in range(len(values)):
-            #     label = Label(
-            #         x=bar_data['xs'][i][0],
-            #         y=bar_data['ys'][i][0],
-            #         text=str(values[i]),
-            #         x_offset=label_x_offset,
-            #     )
-            #     fig.add_layout(label)
 
     for group, color in zip(groups, palette):
         fig.circle(x=[], y=[], size=15, fill_color=color, legend=group)

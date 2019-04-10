@@ -12,21 +12,26 @@ def clip_shp(
         output_file=None,
 ):
     if not output_file:
-        input_file_basename = input_file[:input_file.rindex('.')]
-        output_file = f"{input_file_basename}_clip.shp"
+        if not os.path.isdir(r"./clipped"):
+            os.mkdir(r"clipped")
+        input_file_basename = os.path.basename(input_file).split('.')[0]
+        output_file = f"clipped/{input_file_basename}.shp"
 
     target: gpd.GeoDataFrame = gpd.read_file(input_file)
     clip: gpd.GeoDataFrame = gpd.read_file(clip_file)
-    target = target.to_crs(epsg=4326)
-    clip = clip.to_crs(epsg=4326)
+
+    if target.crs != clip.crs:
+        clip = clip.to_crs(target.crs)
 
     clip_poly = clip.geometry.unary_union
     target = target[target.geometry.intersects(clip_poly)]
     target['geometry'] = target['geometry'].intersection(clip_poly)
 
-    target.to_file(output_file)
-    print("Clipping successful")
-
+    if target.is_empty:
+        print(f"{input_file}: No features in clip area")
+    else:
+        target.to_file(output_file)
+        print(f"{input_file}: Clipping successful")
 
 if __name__ == '__main__':
     fire.Fire(clip_shp)

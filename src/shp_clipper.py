@@ -33,5 +33,6 @@ def clip_shp(
         target.to_file(output_file)
         print(f"{input_file}: Clipping successful")
 
+        
 if __name__ == '__main__':
     fire.Fire(clip_shp)

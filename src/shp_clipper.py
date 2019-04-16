@@ -11,6 +11,8 @@ def clip_shp(
         clip_file,
         output_file=None,
 ):
+    if input_file == clip_file:
+        return
     if not output_file:
         if not os.path.isdir(r"./clipped"):
             os.mkdir(r"clipped")

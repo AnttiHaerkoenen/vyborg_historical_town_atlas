@@ -29,7 +29,7 @@ def clip_shp(
     target = target[target.geometry.intersects(clip_poly)]
     target['geometry'] = target['geometry'].intersection(clip_poly)
 
-    if target.is_empty:
+    if target.empty:
         print(f"{input_file}: No features in clip area")
     else:
         target.to_file(output_file)

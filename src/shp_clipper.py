@@ -1,8 +1,8 @@
 #!/usr/bin/env python
 
 import os
+import argparse
 
-import fire
 import geopandas as gpd
 
 
@@ -37,4 +37,25 @@ def clip_shp(
 
         
 if __name__ == '__main__':
-    fire.Fire(clip_shp)
+    parser = argparse.ArgumentParser(description="Clip shapefiles with other shapefiles")
+    parser.add_argument(
+        'files',
+        nargs='+',
+        help='target files',
+    )
+    parser.add_argument(
+        '--clip_file',
+        help='clip file name',
+    )
+    parser.add_argument(
+        '--output_file',
+        help='output file name',
+    )
+    args = parser.parse_args()
+
+    for file in args.files:
+        clip_shp(
+            file,
+            clip_file=args.clip_file,
+            output_file=args.output_file
+        )

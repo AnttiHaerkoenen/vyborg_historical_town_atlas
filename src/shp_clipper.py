@@ -44,11 +44,11 @@ if __name__ == '__main__':
         help='target files',
     )
     parser.add_argument(
-        '--clip_file',
+        '--clip-file',
         help='clip file name',
     )
     parser.add_argument(
-        '--output_file',
+        '--output-file',
         help='output file name',
     )
     args = parser.parse_args()

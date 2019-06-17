@@ -46,6 +46,8 @@ if __name__ == '__main__':
     fig.title.text_font_size = '20pt'
     fig.xaxis.major_label_text_font_size = '16pt'
     fig.yaxis.major_label_text_font_size = '16pt'
+    fig.xaxis.axis_label = 'Vuosi | Year'
+    fig.yaxis.axis_label = 'Asukkaat | Inhabitants '
 
     hover1 = HoverTool(tooltips=[
         ("vuosi", "@year"),

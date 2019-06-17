@@ -56,6 +56,8 @@ if __name__ == '__main__':
     fig.title.text_font_size = '20pt'
     fig.xaxis.major_label_text_font_size = '16pt'
     fig.yaxis.major_label_text_font_size = '16pt'
+    fig.xaxis.axis_label = 'Vuosi | Year'
+    fig.yaxis.axis_label = 'Osuus | Percentage'
 
     fig.add_tools(hover)
     output_file(r'../figures/language_groups_percentages.html')

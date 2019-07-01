@@ -57,5 +57,5 @@ if __name__ == '__main__':
         clip_shp(
             file,
             clip_file=args.clip_file,
-            output_file=args.output_file
+            output_file=args.output_file,
         )

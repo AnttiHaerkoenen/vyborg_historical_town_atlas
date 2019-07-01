@@ -11,7 +11,7 @@ if __name__ == '__main__':
     population = pd.read_csv('population_karonen.csv', index_col=0)
     population.interpolate(method='linear', inplace=True)
     # population['Yhteensa'] += population['korjaus']
-    population['ka'] = population['Arvioitu hk-tieto'].rolling(3).mean()
+    population['ka'] = population['Arvioitu hk-tieto'].rolling(3).mean() * 2.1
     source = ColumnDataSource(population)
 
     fig = figure(

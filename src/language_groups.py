@@ -26,8 +26,8 @@ if __name__ == '__main__':
 
     fig = figure(
         y_range=(0, 85000),
-        plot_width=900,
-        plot_height=700,
+        plot_width=700,
+        plot_height=900,
     )
     fig.vbar_stack(
         stackers=group_names,

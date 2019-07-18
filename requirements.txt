@@ -8,5 +8,4 @@ geopandas
 pycrs
 shapely
 folium
-squarify
 fire

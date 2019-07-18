@@ -13,8 +13,8 @@ if __name__ == '__main__':
     source = ColumnDataSource(population)
 
     fig = figure(
-        plot_width=700,
-        plot_height=500,
+        plot_width=600,
+        plot_height=600,
         x_range=(1718, 1900),
     )
     line1 = fig.line(

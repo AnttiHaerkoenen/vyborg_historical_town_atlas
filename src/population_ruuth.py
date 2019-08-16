@@ -22,14 +22,14 @@ if __name__ == '__main__':
         y='population_secular',
         source=source,
         color='blue',
-        legend='väestö henkikirjojen mukaan'
+        legend='väestö henkikirjojen mukaan',
     )
     line2 = fig.line(
         x='year',
         y='population_church',
         source=source,
         color='green',
-        legend='väestö, srk'
+        legend='väestö, srk',
     )
     fig.xaxis.major_label_text_font_size = '16pt'
     fig.yaxis.major_label_text_font_size = '16pt'

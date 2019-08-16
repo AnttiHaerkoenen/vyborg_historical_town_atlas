@@ -27,7 +27,7 @@ if __name__ == '__main__':
     fig = figure(
         y_range=(0, 101),
         plot_width=700,
-        plot_height=900
+        plot_height=900,
     )
     fig.vbar_stack(
         stackers=group_names,
@@ -43,7 +43,7 @@ if __name__ == '__main__':
         ("venäjä", "@russian{0.0 a}"),
         ("ruotsi", "@swedish{0.0 a}"),
         ("saksa", "@german{0.0 a}"),
-        ("muut", "@other{0.0 a}")
+        ("muut", "@other{0.0 a}"),
     ])
 
     for group, color in zip(group_names_legend, reversed(palette)):

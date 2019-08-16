@@ -55,7 +55,7 @@ if __name__ == '__main__':
         ("venäjä", "@russian"),
         ("ruotsi", "@swedish"),
         ("saksa", "@german"),
-        ("muut", "@other")
+        ("muut", "@other"),
     ])
 
     fig.add_tools(hover1)

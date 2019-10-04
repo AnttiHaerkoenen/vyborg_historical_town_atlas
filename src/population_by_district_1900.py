@@ -1,7 +1,7 @@
 import geopandas as gpd
 import pandas as pd
 import numpy as np
-from bokeh.plotting import figure, show, output_file
+from bokeh.plotting import figure, show, save, output_file
 from bokeh.layouts import gridplot
 from bokeh.palettes import magma
 from bokeh.models import (
@@ -45,9 +45,8 @@ def plot_population_by_district(
     )
     districts = get_xy(districts)
     districts = districts.dropna(subset=[year, ])
-    districts = districts.fillna(0)
+    districts = districts.fillna({year: 0})
     districts[year] = districts[year] / districts['SHAPE_Area'] / 1000000
-    print(districts)
     districts_src = GeoJSONDataSource(geojson=districts.to_json())
     color_mapper = LinearColorMapper(
         palette=palette,
@@ -61,7 +60,7 @@ def plot_population_by_district(
         y_axis_location=None,
         y_range=(60.686, 60.74),
         x_range=(28.67, 28.81),
-        plot_height=500,
+        plot_height=450,
         plot_width=600,
     )
     fig.grid.grid_line_color = None
@@ -122,11 +121,11 @@ def plot_population_by_district(
 
 
 if __name__ == '__main__':
-    os.chdir('..\data')
+    os.chdir('../data')
     logging.basicConfig(level=logging.INFO)
-    fig1 = plot_population_by_district(1900)
-    fig2 = plot_population_by_district(1910)
-    fig3 = plot_population_by_district(1920)
-    fig4 = plot_population_by_district(1930)
+    fig1 = plot_population_by_district(1900, title='1900')
+    fig2 = plot_population_by_district(1910, title='1910')
+    fig3 = plot_population_by_district(1920, title='1920')
+    fig4 = plot_population_by_district(1930, title='1930')
     output_file(r'../figures/population_by_district_1900.html')
-    show(gridplot([fig1, fig2, fig3, fig4], ncols=1))
+    save(gridplot([fig1, fig2, fig3, fig4], ncols=1))

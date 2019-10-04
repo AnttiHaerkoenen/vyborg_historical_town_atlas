@@ -57,7 +57,7 @@ def mk_plots_folium(fp_plots, title=None):
 
 
 def plot_plots_bokeh(fp_plots, title=None, **kwargs):
-    water = gpd.read_file('water.shp')
+    water = gpd.read_file('water_clip.shp')
     water = get_xy(multipolygons_to_polygons(water))
     water_src = GeoJSONDataSource(geojson=water.to_json())
 
@@ -134,14 +134,15 @@ def plot_plots_bokeh(fp_plots, title=None, **kwargs):
 
 if __name__ == '__main__':
     logging.basicConfig(level=logging.INFO)
-    os.chdir(r'..\data')
-    fol = mk_plots_folium('plots_1878.shp')
-    os.chdir(r'..\figures')
-    fol.save('folium.html')
-    # fig = plot_plots_bokeh(
-    #     'plots_1878.shp',
-    #     plot_height=1600,
-    #     plot_width=1900,
-    # )
+    os.chdir(r'../data')
+    # fol = mk_plots_folium('plots_1878.shp')
+    # os.chdir(r'../figures')
+    # fol.save('folium.html')
+    fig = plot_plots_bokeh(
+        'plots_1878.shp',
+        plot_height=400,
+        plot_width=500,
+    )
     output_file(r'../figures/plots_1878.html')
+    save(fig)
     # show(fig)

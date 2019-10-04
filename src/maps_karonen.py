@@ -1,7 +1,7 @@
 import os
 from collections import namedtuple
 
-import squarify
+# import squarify
 import geopandas as gpd
 import pandas as pd
 import numpy as np
@@ -70,7 +70,7 @@ def get_bar(
         width,
         height,
 ) -> dict:
-    data = data.loc[data[data_col] > 0][::-1]
+    data = data.loc[data[data_col] > 0]
     heights = data[data_col] / data[data_col].sum() * height
     bars = len(heights)
 
